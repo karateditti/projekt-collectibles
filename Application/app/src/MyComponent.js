@@ -4,16 +4,39 @@ import {
   ContractData,
   ContractForm,
 } from "drizzle-react-components";
-
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Nav from 'react-bootstrap/Nav'
 import logo from "./logo.png";
 
 export default ({ accounts }) => (
   <div className="App">
-    <div>
-      <img src={logo} alt="drizzle-logo" />
-      <h1>Drizzle Examples</h1>
-      <p>Examples of how to get started with Drizzle in various situations.</p>
-    </div>
+    <Container fluid={true} id="headContainer">
+  <Row>
+    <Col md={6}>
+      <img src={logo} alt="logo" id="logo" />
+    </Col>
+    <Col md={6}>
+      <Nav className="justify-content-center" activeKey="/home">
+    <Nav.Item>
+      <Nav.Link href="/home">Meine Fraktale</Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+      <Nav.Link eventKey="link-1">Store</Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+      <Nav.Link eventKey="link-2">Anleitung</Nav.Link>
+    </Nav.Item>
+  </Nav>
+    </Col>
+  </Row>
+</Container>
+    <Container fluid={true} id="separator">
+    </Container>
+    <Container>
+      <h1>Fraktale on Blockchain</h1>
+      <p>Projekt</p>
 
     <div className="section">
       <h2>Active Account</h2>
@@ -83,5 +106,6 @@ export default ({ accounts }) => (
       <strong>Single Device Data: </strong>
       <ContractData contract="ComplexStorage" method="singleDD" />
     </div>
+    </Container>
   </div>
 );
