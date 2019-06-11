@@ -7,6 +7,7 @@ const mapStateToProps = state => {
     SimpleStorage: state.contracts.SimpleStorage,
     TutorialToken: state.contracts.TutorialToken,
     drizzleStatus: state.drizzleStatus,
+Eigentumsdefinition: state.contracts.Eigentumsdefinition,
   };
 };
 

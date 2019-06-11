@@ -5,12 +5,14 @@ turtle.tracer(0, 0)
 rules = {
 "A": "AA",
 "B":"B+A-B-A+B",
+"C":"C-D--D+C++CC+D-",
+"D":"+C-DD--D-C++C+D",
 "F": "F+F--F+F"
 }
-iterations = 7
+iterations = 6
 angle = 60
-s = 300
-turtle.setworldcoordinates(-10000,-10000,80000,80000)
+s = 50
+turtle.setworldcoordinates(0,-5000,5000,1000)
 class LSystem:
     """Lindenmayer system"""
     rules = None
@@ -42,10 +44,18 @@ class LSystem:
                 t.forward(s)
             elif c is "B":
                 t.back(s)
+            elif c is "C":
+                t.forward(s)
+            elif c is "D":
+                t.back(s)
 
 
 ls = LSystem()
-
-sequence = ls.process("A+A+B",rules,iterations)
+#   "C"         =>  Gosper Curve
+#   "F"         =>  Koch Curve
+#   "F+F--F+F"  => Koch Snowflake
+axiom = "F+F--F+F"
+sequence = ls.process(axiom,rules,iterations)
+ls.move_turtle(sequence)
 turtle.update()
 turtle.exitonclick()

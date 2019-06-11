@@ -1,6 +1,5 @@
 .App {
-  text-align: center;
-  font-family:Calibre,Helvetica,Arial,sans-serif;
+  font-family:Poppins,Helvetica,Arial,sans-serif;
 }
 #root{
   overflow-x: hidden;
@@ -10,8 +9,11 @@
   margin: 4rem auto auto;
 }
 #logo{
-  height:100px;
+  height:100px; 
+    margin-right: 10vw;
+    margin-left: 10vw;
 }
+
 #separator{
   height:40px;
 background: #7db9e8; /* Old browsers */
@@ -22,16 +24,71 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7db9e8', end
 
 }
 #headContainer{
-  padding:10px;
-  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+0,e5e5e5+100 */
-background: #ffffff; /* Old browsers */
-background: -moz-linear-gradient(top,  #ffffff 0%, #e5e5e5 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom,  #ffffff 0%,#e5e5e5 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
 
 }
-.nav-item a{
+#profileLink{
+height:60px;
+width:60px;
+padding: 10px;
+    border: 1px solid black;
+}
+.navbar-nav a{
   color:black;
   font-weight:600;
+font-size:17.6px;
+  font-family:poppins, sans-serif;
+    color: rgba(0,0,0,.7) !important;
+}
+.jumbotron canvas{
+position: fixed;
+top: -30px;
+left:0;
+    width: 100%;
+    object-fit: cover;
+    height: 20% !important;
+    margin-top: 6%;
+}
+
+.mainContainer{
+border: 1px solid #ddd;
+}
+.jumbotron{
+margin-bottom:0;
+}
+.jumbotron .container{
+color: white;
+	
+}
+.jumbotron{
+background-color:black;
+}
+.navbar{
+    background: #ffffff;
+    transition: none;
+    min-height: 77px;
+    padding: .5rem 0;
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
+	z-index:1;
+}
+.fractalDisplay{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.fractalDisplay .col-3{
+	height: auto;
+border: 1px solid #ddd;
+}
+.fractalContainer{
+position:  absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+padding:5px;
+}
+.fractalContainer img{
+ width:100%;
+}
+.blocker{
+ margin-top:100%;
 }
