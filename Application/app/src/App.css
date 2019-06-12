@@ -45,7 +45,7 @@ top: -30px;
 left:0;
     width: 100%;
     object-fit: cover;
-    height: 20% !important;
+    height: 19% !important;
     margin-top: 6%;
 }
 
@@ -91,4 +91,16 @@ padding:5px;
 }
 .blocker{
  margin-top:100%;
+}
+#metadata{
+    display:none;
+}
+.fractal-default{
+    border:7px solid white;
+}
+.fractal-rare{
+    border:7px solid #7f1a80;
+}
+.fractal-special{
+    border:7px solid #0a99c8;
 }

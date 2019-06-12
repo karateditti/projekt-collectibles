@@ -6,6 +6,7 @@ import {
 } from "drizzle-react-components";
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
+import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav'
 import Badge from 'react-bootstrap/Badge'
@@ -14,9 +15,27 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import Image from 'react-bootstrap/Image'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Particles from 'react-particles-js';
+import {FractalBalance,FractalDisplay} from "./FractalComponents.js";
 import logo from "./logo.png";
 import fr1 from "./fr1.PNG";
 import fr2 from "./fr2.PNG";
+
+
+class ShowBalance extends React.Component {
+ constructor(props) {
+    super(props);
+  }
+  render() {
+   try {
+     var balance = parseInt(document.getElementById("meta_balanceOf").value);
+   }
+   catch (e) {
+     return "";
+   }
+        return    balance;
+}
+}
+
 class MyFractals extends React.Component {
  constructor(props) {
     super(props);
@@ -25,12 +44,14 @@ class MyFractals extends React.Component {
   render() {
 var fractalsArray = [];
 try{
-	var fractals = parseInt(document.getElementById("fractalCount").getElementsByTagName("span")[1].innerHTML);
-}catch{}
+	var fractals = parseInt(document.getElementById("meta_balanceOf").value);
+}catch{ return "Loading";}
         for (var i = 0; i < fractals; i++) {
-            fractalsArray.push(<Col xs={3}><div className="blocker"></div><div className="fractalContainer"><ContractData contract="Eigentumsdefinition" method="getFraktalFromId" methodArgs={[i]}/><img src={fr1}/></div></Col>);
+            fractalsArray.push(<Col xs={3}><div className="blocker"></div><FractalDisplay contract="Eigentumsdefinition" method="getFraktalFromId" methodArgs={[i]}/></Col>);
         }
-
+        while(fractalsArray.length%4 !== 0){
+          fractalsArray.push(<Col xs={3}><div className="blocker"></div><div className="fractalContainer"></div></Col>);
+        }
         return          fractalsArray;
 }
 }
@@ -39,7 +60,10 @@ try{
 
 export default ({ accounts}) => (
 
-  <div className="App"><Navbar collapseOnSelect expand="lg">
+  <div className="App">
+    <form id="metadata">
+      <FractalBalance     contract="Eigentumsdefinition" methodArgs={[accounts[0]]}/>
+  </form><Navbar collapseOnSelect expand="lg">
   <div id="logo">
 	 <img src="https://mobirise.com/extensions/industrym4/assets/images/logo.png" alt="logo" id="logo" />
  </div>
@@ -65,7 +89,7 @@ export default ({ accounts}) => (
 </Navbar>    <Container fluid={true} id="headContainers">
  </Container>
     <Jumbotron fluid>
-<Particles params={
+    <Particles params={
 {
   "particles": {
     "number": {
@@ -180,10 +204,9 @@ canvas: {
     },
   "retina_detect": false
 }
-
-
 } />
   <Container>
+
     <h1>Fractals on Blockchain</h1>
     <p>
       Start collecting your unique, personal fracts on the Ethereum blockchain today!
@@ -192,24 +215,16 @@ canvas: {
 </Jumbotron>    
 <Container className="mainContainer">
 <h2 id="fractalCount">
-    Meine Fraktale <Badge variant="secondary" ><ContractData
-          contract="Eigentumsdefinition"
-          method="balanceOf"
-          methodArgs={[accounts[0]]}
-        />
+    Meine Fraktale <Badge variant="secondary" >
+        <ShowBalance/>
 </Badge>
   </h2>
-<Row className="fractalDisplay">
-<MyFractals account={[accounts[0]]} fractals=<ContractData
-          contract="Eigentumsdefinition"
-          method="balanceOf"
-          methodArgs={[accounts[0]]}
-        />
- />
-
-
+  <Container>
+    <Row className="fractalDisplay">
+<MyFractals />
 
 </Row>
+  </Container>
     <div className="section">
       <h2>Active Account</h2>
       <AccountData accountIndex="0" units="ether" precision="3" />

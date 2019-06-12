@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FRACTAL MACHINE</title>
+<meta name="description" content="Fractal Machine">
+<meta name="author" content="Nico Disseldorp">
+<meta name="keywords" content="HTML5,JavaScript,Logic,Fractal,Machine">
+
+<script src="./fractals.js"></script>
+
+<style type="text/css">
+body{
+font-family:"Courier New";
+text-align:center;
+overflow: hidden;
+color:white;
+}
+
+.hidden
+{
+display:none;
+}
+
+div.controls
+{
+user-select: none;
+-moz-user-select: none;
+-webkit-user-select: none;
+-ms-user-select: none;
+position:fixed;
+bottom : 0%;
+left : 0%;
+right : 0%;
+margin: auto;
+max-width:430px;
+background: rgba(64, 64, 64, 0.8);
+border-top-right-radius:5px;
+border-top-left-radius:5px;
+}
+
+#main{
+#position:fixed;
+#top: 0px;
+#left: 0px;
+#z-index:-1;
+
+cursor: url(https://mail.google.com/mail/images/2/openhand.cur), default !important;
+}
+
+div.slider
+{
+position: relative;
+left: 100;
+height: 20px;
+width: 20px;
+background: white;
+cursor: pointer;
+border-radius:15px;
+z-index:1;
+}
+div.sliderdown
+{
+position: relative;
+left: 100;
+height: 20px;
+width: 20px;
+background: #aaaaaa;
+cursor: pointer;
+border-radius:15px;
+z-index:2;
+}
+
+div.sliderlinecontainer:hover div.slider
+{
+z-index:2;
+background:#aaaaaa;
+}
+
+div.sliderline
+{
+position: absolute;
+top: 45%;
+width: 100%;
+height: 1px;
+background: #ffffff;
+}
+
+div.sliderlinecontainer
+{
+position:relative;
+cursor:pointer;
+padding-bottom:2px;
+}
+
+div.sliderlabeldiv
+{
+display:none;
+}
+
+div.sliderdown div.sliderlabeldiv, div.sliderlinecontainer:hover div.sliderlabeldiv
+{
+border-radius:2px;
+color:black;
+background-color:#aaaaaa;
+display:block;
+position:absolute;
+top:-2.8em;
+left:-15px;
+width:50px;
+height:2.5em;
+}
+
+p.sltitle
+{
+margin:0;
+font-size: small;
+}
+
+.menu
+{
+display:none;
+}
+
+#animatecell
+{
+position:relative;
+}
+
+#animatecell:hover .menu
+{
+display:block;
+position:absolute;
+top:-300%;
+background-color:black;
+}
+
+table, td
+{
+margin: auto;
+border: 0px;
+padding:0;
+}
+
+table#thumbtable
+{
+border-spacing:0;
+border-collapse:collapse;
+}
+
+canvas.thumbcanvas
+{
+cursor: pointer;
+margin-left:2px;
+margin-right:2px;
+display:block;
+}
+
+.prev
+{
+cursor: pointer;
+height:12px;
+width:56px;
+background-color:#ffffff;
+display:block;
+margin:2px;
+}
+
+.prev:hover
+{
+background:#aaaaaa;
+}
+
+.prevGrey
+{
+display:block;
+height:12px;
+width:56px;
+background-color:#ffffff;
+margin:2px;
+}
+
+div.prev div
+{
+position:relative;
+top:3px;
+width: 0px;
+height: 0px;
+margin:auto;
+border-left: 6px solid transparent;
+border-right: 6px solid transparent;
+border-top: 6px solid black;
+cursor: pointer;
+}
+
+div.prevGrey div
+{
+position:relative;
+top:3px;
+width: 0px;
+height: 0px;
+margin:auto;
+border-left: 6px solid transparent;
+border-right: 6px solid transparent;
+border-top: 6px solid #777777;
+}
+
+a.button
+{
+display:block;
+background:white;
+width: 80px;
+color:black;
+cursor: pointer;
+}
+
+a.buttonon
+{
+display:block;
+width: 80px;
+background: #444444;
+color: #ffffff;
+cursor: pointer;
+}
+
+a.buttongrey
+{
+display:block;
+width: 80px;
+background: #ffffff;
+color: #777777;
+}
+
+a.button:hover
+{
+background:#aaaaaa;
+}
+
+#helpbutton
+{
+position:absolute;
+right:20px;
+top:2px;
+}
+
+.homediv
+{
+position:fixed;
+bottom:4px;
+right:4px;
+}
+
+.homelink
+{
+color:black;
+font-style: italic;
+font-size:smaller;
+}
+
+.homelinkwhite
+{
+color:white;
+font-style: italic;
+font-size:smaller;
+}
+
+.pushbutton
+{
+cursor: pointer;
+}
+
+.pushbutton:hover .pushback
+{
+background:#aaaaaa;
+}
+
+.pushback
+{
+background:#ffffff;
+position: absolute;
+height:1em;
+width: 1em;
+border-radius:.5em;
+}
+
+.pushfore
+{
+position: relative;
+font-size: small;
+top:-3px;
+color:#000000;
+}
+
+div#helpbox
+{
+color:#000000;
+position:fixed;
+top : 0;
+left : 0%;
+right : 0%;
+background: rgba(192, 192, 192, 0.9);
+z-index:2;
+padding-bottom:20px;
+padding-top:0px;
+padding-left:20px;
+padding-right:20px;
+border-bottom-right-radius:5px;
+border-bottom-left-radius:5px;
+text-align:center;
+max-width:600px;
+height:200px;
+margin: auto;
+}
+
+#closehelp
+{
+position:absolute;
+top:2px;
+right:20px;
+}
+
+#closehelp:hover .pushback
+{
+background-color:#555555;
+}
+
+#closehelp .pushback
+{
+background-color:#000000;
+}
+
+#closehelp .pushfore
+{
+color:#aaaaaa;
+}
+
+.heading
+{
+margin:0;
+font-size:x-large;
+}
+
+</style>
+
+</head>
+
+<body onresize = "fract.fixsize();">
+
+<div id="homediv" class="homediv"><a id="homelink" class="homelink" href="http://sciencevsmagic.net/">sciencevsmagic.net</a></div>
+
+<div id="controls" class="controls">
+
+<div id="helpbutton" class="pushbutton" onclick="fract.help.toggle()">
+	<div class="pushback">
+	<a class="pushfore"> ? </a> </div>
+</div>
+
+<a> NICO'S FRACTAL MACHINE</a>
+
+<div class="sliderlinecontainer" onmousedown="fract.angle.jump(event)" onmouseover="fract.help.show('angle')" onmouseout="fract.help.show('default')">
+	<div class="slider" id="angle" onmousedown="fract.angle.down(event)">
+		<div class="sliderlabeldiv">
+			<p class="sltitle">ANGLE</p>
+			<a id="langle"></a><a>&deg;</a>
+		</div>
+	</div>
+	<div class="sliderline"></div>
+</div>
+<div class="sliderlinecontainer" onmousedown="fract.skewangle.jump(event)" onmouseover="fract.help.show('skew')" onmouseout="fract.help.show('default')">
+	<div class="slider" id="skewangle" onmousedown="fract.skewangle.down(event)">
+		<div class="sliderlabeldiv">
+			<p class="sltitle">SKEW</p>
+			<a id="lskewangle"></a><a>&deg;</a>
+		</div>
+	</div>
+	<div class="sliderline"></div>
+</div>
+
+
+<table id="thumbtable">
+	<tr id="thumbarea">
+	</tr>
+</table>
+
+<table>
+	<tr>
+		<td>
+			<a class="button" id="randombutton" onclick="fract.reset();">RESET</a>
+		</td>
+		<td>
+			<a class="button" id="randombutton" onclick="fract.random();">RANDOM</a>
+		</td>
+		<td>
+			<div id="animatecell">
+			<a class="button" id="animatebutton" onclick="fract.animate.toggle();">ANIMATE</a>
+			<div class="menu">
+				<a class="button" id="autobutton" onclick="fract.auto.toggle();">AUTO</a>
+				<a class="button"  id="anglelock" onmousedown="fract.angle.locktoggle()" onmouseover="fract.angle.highlight(1)" onmouseout="fract.angle.highlight(0)">ANGLE</a>
+				<a class="button"  id="skewanglelock" onmousedown="fract.skewangle.locktoggle()" onmouseover="fract.skewangle.highlight(1)" onmouseout="fract.skewangle.highlight(0)">SKEW</a>
+			</div>
+			</div>
+		</td>
+		<td>
+			<a class="button" id="colorbutton" onclick="fract.color.toggle();">COLOR</a>
+		</td>
+		<td>
+			<a class="button" id="trailsbutton" onclick="fract.trails.toggle();">TRAILS</a>
+		</td>
+	</tr>
+</table>
+
+</div>
+
+<div id="helpbox" class="hidden">
+
+<div id="closehelp" class="pushbutton" onclick="fract.help.toggle()">
+	<div class="pushback">
+	<a class="pushfore"> X </a> </div>
+</div>
+
+<div id="helpdefault" class="helpdiv">
+	<p class="heading">NICO'S FRACTAL MACHINE</p>
+	<p class="advice">The shape you see is the combined output of the controls below. Mouse over them to see what they do.
+	</p>
+	<p class="advice">If the page gets too slow, turn some of the parameters down.
+	</p>
+	<p class="advice">Press H or ~ to hide the controls.
+	</p>
+	<a class="blog" href="http://blog.sciencevsmagic.net/science/fractal-machine/">Find out more in this blog post.</a>
+</div>
+
+<div id="helpangle" class="hidden">
+	<p class="heading">ANGLE</p>
+	<img src="angle.png"></img>
+	<p>
+	This slider changes the first and last angles of the motif. Any other angles will sort themselves out to be symmetrical.
+	</p>
+</div>
+
+<div id="helpskew" class="hidden">
+	<p class="heading">SKEW</p>
+	<img src="skew.png"></img>
+	<p>
+	Skew the motif asymmetrically.
+	</p>
+</div>
+
+<div id="helpdepth" class="hidden">
+	<p class="heading">DEPTH</p>
+	<img src="its.png"></img>
+	<p>
+Set the number of times each line is substituted for the motif.
+	</p>
+</div>
+
+<div id="helpsegments" class="hidden">
+	<p class="heading">SEGMENTS</p>
+	<img src="seg.png"></img>
+	<p>
+Segment the motif into more or fewer pieces of equal length.
+	</p>
+</div>
+
+<div id="helppoly" class="hidden">
+	<p class="heading">BASE</p>
+	<img src="poly.png"></img>
+	<p>
+Change the base shape the fractal is drawn on. Each side of the polygon will be drawn as one copy of the fractal curve.
+	</p>
+</div>
+
+<div id="helparms" class="hidden">
+	<p class="heading">ARMS</p>
+	<img src="arms.png"></img>
+	<p>
+Add lines that stick out from the motif's corners.
+	</p>
+</div>
+
+<div id="helpmirror" class="hidden">
+	<p class="heading">MIRROR</p>
+	<img src="mirror.png"></img>
+	<p>
+Mirror the motif at every level of the fractal.
+	</p>
+</div>
+
+</div>
+
+<div style="width:300px; height:300px;  border:1px solid black">
+<canvas id="main" class="render-fractal" width="300" height="300" style="border:0px solid #000000;"  data-angle="20" data-arms="1" data-poly="3" data-segments="1" data-mirror="1" data-depth="1">
+
+</canvas>
+</div>
+<div style="width:300px; height:300px; border:1px solid black">
+<canvas id="main2" class="render-fractal" width="300" height="300" style="border:0px solid #000000;"  data-angle="12" data-arms="0" data-poly="0" data-segments="0" data-mirror="1" data-depth="2">
+
+
+</canvas>
+</div>
+    <script>
+function initFractal(id) {
+  fract.init(id);
+}
+ var fractals = document.getElementsByClassName("render-fractal");
+for (var i = 0; i < fractals.length; i++) {
+    console.log(fractals[i]);
+    setTimeout(initFractal, 1, fractals[i].id);
+    //Do something
+}
+</script>
+
+
+</body>
+
+</html>
