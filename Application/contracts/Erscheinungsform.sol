@@ -42,7 +42,7 @@ contract Erscheinungsform is Zugangsbeschraenkung {
         return (x);
     }
 
-    function getRandomNumber(uint rangeMax) public returns(uint){
+    function getRandomNumber(uint rangeMax) public view returns(uint){
         return uint(blockhash(block.number-1))%rangeMax +1;
     }
 
