@@ -17,6 +17,8 @@ contract Erscheinungsform is Zugangsbeschraenkung {
         uint iterationen;
         uint raritaet;
         Farbe farbe;
+        uint skew;
+        uint arms;
     }
 
     struct Fraktal{
@@ -32,8 +34,8 @@ contract Erscheinungsform is Zugangsbeschraenkung {
 
     Fraktal[] fraktale;
 
-    function getFraktalFromId(uint id) public view returns(uint[9] memory) {
-        uint[9] memory x = [uint(fraktale[id].erscheinung.winkel),fraktale[id].erscheinung.polygon,fraktale[id].erscheinung.segmente,fraktale[id].erscheinung.spiegelung,fraktale[id].erscheinung.iterationen,fraktale[id].erscheinung.raritaet,fraktale[id].erscheinung.farbe.rot,fraktale[id].erscheinung.farbe.gruen,fraktale[id].erscheinung.farbe.blau];
+    function getFraktalFromId(uint id) public view returns(uint[11] memory) {
+        uint[11] memory x = [uint(fraktale[id].erscheinung.winkel),fraktale[id].erscheinung.polygon,fraktale[id].erscheinung.segmente,fraktale[id].erscheinung.spiegelung,fraktale[id].erscheinung.iterationen,fraktale[id].erscheinung.raritaet,fraktale[id].erscheinung.farbe.rot,fraktale[id].erscheinung.farbe.gruen,fraktale[id].erscheinung.farbe.blau,fraktale[id].erscheinung.skew, fraktale[id].erscheinung.arms];
         return (x);
     }
 

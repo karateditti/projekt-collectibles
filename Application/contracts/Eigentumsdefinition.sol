@@ -10,7 +10,7 @@ contract Eigentumsdefinition is ERC721Full, Erscheinungsform {
     //initial mint - darf nur von verwaltender Einheit durchgeführt werden
     function mint() public {
         Farbe memory farbe = Farbe(getRandomNumber(255),getRandomNumber(255),getRandomNumber(255));
-        FraktalErscheinung memory erscheinung = FraktalErscheinung(getRandomNumber(360),getRandomNumber(6), getRandomNumber(5),getRandomNumber(2),getRandomNumber(6), getRandomNumber(3),farbe);
+        FraktalErscheinung memory erscheinung = FraktalErscheinung(getRandomNumber(360),getRandomNumber(6), getRandomNumber(5),getRandomNumber(2),getRandomNumber(5), getRandomNumber(3),farbe,getRandomNumber(90),getRandomNumber(2));
         // Muss angepasst werden, dass bei id = 0 kein "echtes" fraktal sein darf
         Fraktal memory _fraktal = Fraktal(erscheinung,0,false,0,0);
             uint _id = fraktale.push(_fraktal) - 1;
@@ -23,7 +23,7 @@ contract Eigentumsdefinition is ERC721Full, Erscheinungsform {
         address x = address(0x123);
         for (uint i = 0; i < amount; i++) {
             Farbe memory farbe = Farbe(getRandomNumber(255),getRandomNumber(255),getRandomNumber(255));
-            FraktalErscheinung memory erscheinung = FraktalErscheinung(getRandomNumber(360),getRandomNumber(6), getRandomNumber(5),getRandomNumber(2),getRandomNumber(10), getRandomNumber(3),farbe);
+            FraktalErscheinung memory erscheinung = FraktalErscheinung(getRandomNumber(360),getRandomNumber(6), getRandomNumber(5),getRandomNumber(2),getRandomNumber(5), getRandomNumber(3),farbe, getRandomNumber(90),getRandomNumber(2));
             // Muss angepasst werden, dass bei id = 0 kein "echtes" fraktal sein darf
             Fraktal memory _fraktal = Fraktal(erscheinung,0,true,0,0);
             uint _id = fraktale.push(_fraktal) - 1;
