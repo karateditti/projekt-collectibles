@@ -1,6 +1,7 @@
+pragma solidity^0.5.0;
 pragma experimental ABIEncoderV2;
 
-import "./Generierung.sol";
+import "./Interaktion.sol";
 
-contract FullContract is Generierung{
+contract FullContract is Interaktion{
 }

@@ -57,7 +57,7 @@ contract Erscheinungsform is Zugangsbeschraenkung {
         return arrayNumbers;
     }
 
-    function getRandomNumberRarity() public view returns(uint){
+    function getRandomNumberRarity() internal view returns(uint){
         uint random = getRandomNumber(100);
         uint[3] memory weight=[uint(31),71,101];
         uint[3] memory rarity=[uint(1),2,3];
@@ -70,11 +70,15 @@ contract Erscheinungsform is Zugangsbeschraenkung {
         return 0;
     }
 
-    function getZumTausch(uint id) public view returns (bool){
+    function getZumTausch(uint id) internal view returns (bool){
         return fraktale[id].zumTausch;
     }
 
-    function getGen(uint id) public view returns (uint){
+    function getZumKombinieren(uint id) internal view returns (bool){
+        return fraktale[id].zumKombinieren;
+    }
+
+    function getGen(uint id) internal view returns (uint){
         return fraktale[id].gen;
     }
 
