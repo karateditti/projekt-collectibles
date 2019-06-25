@@ -1,18 +1,21 @@
 import { drizzleConnect } from "drizzle-react";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import {FractalDisplay} from "../FractalComponents";
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+import Container from 'react-bootstrap/Container'
 
-class FractalBalance extends Component {
+class FractalStore extends Component {
   constructor(props, context) {
     super(props);
 
     // Fetch initial value from chain and return cache key for reactive updates.
     var methodArgs = this.props.methodArgs ? this.props.methodArgs : [];
     this.contracts = context.drizzle.contracts;
-    console.log(this.contracts[this.props.contract])
     this.state = {
       dataKey: this.contracts[this.props.contract].methods[
-        'balanceOf'
+        'getAllZumVerkauf'
       ].cacheCall(...methodArgs),
     };
   }
@@ -46,7 +49,7 @@ class FractalBalance extends Component {
     if (
       !(
         this.state.dataKey in
-        this.props.contracts[this.props.contract]['balanceOf']
+        this.props.contracts[this.props.contract]['getAllZumVerkauf']
       )
     ) {
       return <span>Fetching...</span>;
@@ -63,7 +66,7 @@ class FractalBalance extends Component {
     }
 
     var displayData = this.props.contracts[this.props.contract][
-      'balanceOf'
+      'getAllZumVerkauf'
     ][this.state.dataKey].value;
 
     // Optionally convert to UTF8
@@ -83,16 +86,23 @@ class FractalBalance extends Component {
 
     // If return value is an array
     if (Array.isArray(displayData)) {
+
+      var fractalsArray =[];
       const displayListItems = displayData.map((datum, index) => {
         return (
-          <li key={index}>
-            {`${datum}`}
-            {pendingSpinner}
-          </li>
+          fractalsArray.push(<Col xs={4}><FractalDisplay contract="FullContract" method="getFraktalFromId" methodArgs={datum}/></Col>)
         );
       });
-
-      return <ul>{displayListItems}</ul>;
+        while(fractalsArray.length%3 !== 0){
+          fractalsArray.push(<Col xs={4}><div className="blocker"></div><div className="fractalContainer"></div></Col>);
+        }
+        return (
+        <Container id="storeFractalsContainer">
+    <Row className="fractalDisplay">
+        {fractalsArray}
+    </Row>
+        </Container>
+    );
     }
 
     // If retun value is an object
@@ -119,16 +129,20 @@ class FractalBalance extends Component {
     }
 
     return (
-      <input type="hidden" id="meta_balanceOf" value={`${displayData}`}/>
+        <Container id="storeFractalsContainer">
+    <Row className="fractalDisplay">
+        {displayData}
+    </Row>
+        </Container>
     );
   }
 }
 
-FractalBalance.contextTypes = {
+FractalStore.contextTypes = {
   drizzle: PropTypes.object,
 };
 
-FractalBalance.propTypes = {
+FractalStore.propTypes = {
   contracts: PropTypes.object.isRequired,
   contract: PropTypes.string.isRequired,
   methodArgs: PropTypes.array,
@@ -148,4 +162,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default drizzleConnect(FractalBalance, mapStateToProps);
+export default drizzleConnect(FractalStore, mapStateToProps);

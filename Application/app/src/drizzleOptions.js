@@ -1,4 +1,4 @@
-import Eigentumsdefinition from "./contracts/Eigentumsdefinition.json";
+import FullContract from "./contracts/FullContract.json";
 
 const options = {
   web3: {
@@ -8,7 +8,7 @@ const options = {
       url: "ws://127.0.0.1:9545",
     },
   },
-  contracts: [Eigentumsdefinition],
+  contracts: [FullContract],
   events: {
     SimpleStorage: ["StorageSet"],
   },

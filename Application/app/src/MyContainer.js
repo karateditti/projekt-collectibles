@@ -1,14 +1,14 @@
-import MyComponent from "./MyComponent";
+import Main from "./Main";
 import { drizzleConnect } from "drizzle-react";
 
 const mapStateToProps = state => {
   return {
     accounts: state.accounts,
     drizzleStatus: state.drizzleStatus,
-Eigentumsdefinition: state.contracts.Eigentumsdefinition,
+FullContract: state.contracts.FullContract,
   };
 };
 
-const MyContainer = drizzleConnect(MyComponent, mapStateToProps);
+const MainComponent = drizzleConnect(Main, mapStateToProps);
 
-export default MyContainer;
+export default MainComponent;

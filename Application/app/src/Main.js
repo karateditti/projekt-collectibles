@@ -8,6 +8,8 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 import Nav from 'react-bootstrap/Nav'
 import Badge from 'react-bootstrap/Badge'
 import Navbar from 'react-bootstrap/Navbar'
@@ -15,10 +17,13 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import Image from 'react-bootstrap/Image'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Particles from 'react-particles-js';
-import {FractalBalance,FractalDisplay} from "./FractalComponents.js";
+import {FractalBalance,FractalDisplay, FractalMergeControl, FractalStore, FractalDetailView, FractalsOfUser} from "./FractalComponents.js";
+import ReactDOM from 'react-dom'
 import logo from "./logo.png";
 import fr1 from "./fr1.PNG";
 import fr2 from "./fr2.PNG";
+
+var contract = "FullContract"; // The primary contract to use
 
 
 class ShowBalance extends React.Component {
@@ -36,7 +41,7 @@ class ShowBalance extends React.Component {
 }
 }
 
-class MyFractals extends React.Component {
+{/*class MyFractals extends React.Component {
  constructor(props) {
     super(props);
 
@@ -47,22 +52,46 @@ try{
 	var fractals = parseInt(document.getElementById("meta_balanceOf").value);
 }catch{ return "Loading";}
         for (var i = 0; i < fractals; i++) {
-            fractalsArray.push(<Col xs={3}><div className="blocker"></div><FractalDisplay contract="Eigentumsdefinition" method="getFraktalFromId" methodArgs={[i]}/></Col>);
+            fractalsArray.push(<Col xs={4}><div className="fractal-overlay"><ButtonToolbar>
+    <Button variant="primary" size="sm" onClick={((e) => window.FractalDetailView.handleShow(e))}>
+      Enlarge
+    </Button>
+    <Button variant="secondary" size="sm">
+      Share
+    </Button>
+  </ButtonToolbar></div> <FractalDisplay contract={contract} method="getFraktalFromId" methodArgs={[i]}/></Col>);
         }
-        while(fractalsArray.length%4 !== 0){
-          fractalsArray.push(<Col xs={3}><div className="blocker"></div><div className="fractalContainer"></div></Col>);
+        while(fractalsArray.length%3 !== 0){
+          fractalsArray.push(<Col xs={4}><div className="blocker"></div><div className="fractalContainer"></div></Col>);
         }
         return          fractalsArray;
 }
-}
 
+ componentDidMount() {
+   console.log("did mount");
+   setTimeout(eval, 1000, 'initialize_fractals();');
+   return;
+   function initFractal(id) {
+     console.log("will \"fract.init('\"+id+\"');\"");
+  eval("fract.init('"+id+"');");
+}
+  var fractals = document.getElementsByClassName('render-fractal');
+   console.log(fractals);
+  for (var i = 0; i < fractals.length; i++) {
+  console.log(fractals[i].id);
+    setTimeout(initFractal, 1, fractals[i].id);
+    //Do something
+}
+  }
+}
+*/}
 
 
 export default ({ accounts}) => (
 
   <div className="App">
     <form id="metadata">
-      <FractalBalance     contract="Eigentumsdefinition" methodArgs={[accounts[0]]}/>
+      <FractalBalance     contract={contract} methodArgs={[accounts[0]]}/>
   </form><Navbar collapseOnSelect expand="lg">
   <div id="logo">
 	 <img src="https://mobirise.com/extensions/industrym4/assets/images/logo.png" alt="logo" id="logo" />
@@ -81,9 +110,9 @@ export default ({ accounts}) => (
       </NavDropdown>
     </Nav>
     <Nav>
-      <Nav.Link eventKey={2} href="#">
-       <Image src="https://image.flaticon.com/icons/png/512/55/55089.png" roundedCircle id="profileLink" />
-      </Nav.Link>
+        <Navbar.Text>
+      Signed in as: <a href="#login"><AccountData accountIndex="0" units="ether" precision="3" /></a>
+    </Navbar.Text>
     </Nav>
   </Navbar.Collapse>
 </Navbar>    <Container fluid={true} id="headContainers">
@@ -213,42 +242,73 @@ canvas: {
     </p>
   </Container>
 </Jumbotron>    
-<Container className="mainContainer">
-<h2 id="fractalCount">
-    Meine Fraktale <Badge variant="secondary" >
+<Container fluid={true} id="bg-1">
+    <FractalDetailView/>
+    <Container className="text-center">
+    <h2 id="fractalCount">
+    My Fractals <Badge variant="secondary" >
         <ShowBalance/>
 </Badge>
+
   </h2>
+    </Container>
+      <Container className="mainContainer">
+
   <Container>
     <Row className="fractalDisplay">
-<MyFractals />
+<FractalsOfUser methodArgs={[accounts[0]]}/>
 
 </Row>
+
   </Container>
+          <FractalMergeControl />
+
+</Container>
+
+    </Container>
+  <Container fluid={true} id="bg-2">
+      <Container>
+              <h2 id="fractalStore">
+        Fractal Store
+    </h2>
+          {/*<FractalStore contract={contract}/>*/}
     <div className="section">
       <h2>Active Account</h2>
       <AccountData accountIndex="0" units="ether" precision="3" />
       <p>
         <strong>Symbol: </strong>
         <ContractData
-            contract="Eigentumsdefinition"
+            contract={contract}
             method="symbol"
         />
-<ContractForm contract="Eigentumsdefinition" method="mint" />
+<ContractForm contract={contract} method="mint" />
       </p>
       <p>
         <strong>Tokeninhalt: </strong>
-        <ContractData
-          contract="Eigentumsdefinition"
+          {/*<ContractData
+          contract={contract}
           method="getFraktalFromId"
           methodArgs={[1]}
-        />
+        />*/}
       </p>
     </div>
-
-
-
-
-    </Container>
+      </Container>
+  </Container>
+        <Container fluid={true} id="bg-3">
+      <Container>
+              <h2 id="guide">
+        How it works:
+    </h2>
+      </Container>
+  </Container>
+              <Container fluid={true} id="bg-4">
+      <Container>
+          <Row>
+              <h2>
+        Fractals on Blockchain
+    </h2>
+          </Row>
+      </Container>
+  </Container>
   </div>
 );

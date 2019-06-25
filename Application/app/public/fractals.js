@@ -1,4 +1,16 @@
-
+var initialize_fractals=(function(){
+	function initFractal(id) {
+     console.log("will \"fract.init('\"+id+\"');\"");
+  eval("fract.init('"+id+"');");
+}
+  var fractals = document.getElementsByClassName('render-fractal');
+   console.log(fractals);
+  for (var i = 0; i < fractals.length; i++) {
+  console.log(fractals[i].id);
+    setTimeout(initFractal, 100*i, fractals[i].id);
+    //Do something
+}
+})
 var fract=(function (){
 	var module = {},
 		zoomlevel=4,
@@ -6,11 +18,13 @@ var fract=(function (){
 		c,
 		ctx,
 		height,
-		width;
+		width,
+	tsize;
 
-	module.init = function (elementId){
+	module.init = function (elementId, size=300){
 		c = document.getElementById(elementId);
 		ctx = c.getContext("2d");
+		tsize = size;
 		fract.angle = makeSlider({steps:360/5, step:60/5, id:"angle"});
 		fract.skewangle = makeSlider({steps:180/5, step:90/5, id:"skewangle"});
 		fract.poly = makeThumb({steps:6, step:0, id:"poly"});
@@ -94,8 +108,8 @@ var fract=(function (){
 	}
 
 	module.fixsize = function (){
-		width= 300;
-		height= 300;
+		width= tsize;
+		height= tsize;
 		c.width=width;
 		c.height=height;
 		ctx.fillStyle=fract.color.bg;

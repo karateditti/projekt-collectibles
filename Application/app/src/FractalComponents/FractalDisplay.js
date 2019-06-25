@@ -5,7 +5,10 @@ import PropTypes from "prop-types";
 class FractalDisplay extends Component {
   constructor(props, context) {
     super(props);
+    this.state = {isToggleOn: false};
 
+    // This binding is necessary to make `this` work in the callback
+    this.handleClick = this.handleClick.bind(this);
     // Fetch initial value from chain and return cache key for reactive updates.
     var methodArgs = this.props.methodArgs ? this.props.methodArgs : [];
 
@@ -35,7 +38,14 @@ class FractalDisplay extends Component {
       });
     }
   }
+   componentDidMount() {
 
+   }
+ handleClick() {
+    this.setState(state => ({
+      isToggleOn: !state.isToggleOn
+    }));
+  }
   render() {
     // Contract is not yet intialized.
     if (!this.props.contracts[this.props.contract].initialized) {
@@ -81,48 +91,29 @@ class FractalDisplay extends Component {
       return this.props.render(displayData);
     }
 
-    // If return value is an array
+    // If return value is an
+    /*
     if (Array.isArray(displayData)) {
       const displayListItems = displayData.map((datum, index) => {
         return (
           <li key={index}>
-            {`${datum}`}
+            {`${datum}`} array
             {pendingSpinner}
           </li>
         );
       });
+  */
+      return <canvas id={"fract-"+this.props.fractalId} className= {'render-fractal '+(this.state.isToggleOn ? 'fractal-toggled' : '')} width="300" height="300"
+                     data-angle={displayData[0]} data-arms="0" data-poly={displayData[1]} data-segments={displayData[2]} data-mirror={displayData[3]} data-depth={displayData[4]}/>;
 
-      return <ul>{displayListItems}</ul>;
-    }
     var frame = "fractal-default";
-    if(displayData.includes("115")){
-        frame = "fractal-rare";
-    }
-    if(displayData.includes("2343")){
-        frame = "fractal-special";
-    }
+    //if(displayData.includes("115")){
+     //   frame = "fractal-rare";
+    //}
+    //if(displayData.includes("2343")){
+    //    frame = "fractal-special";
+    //}
     // If retun value is an object
-    if (typeof displayData === "object") {
-      var i = 0;
-      const displayObjectProps = [];
-
-      Object.keys(displayData).forEach(key => {
-        if (i != key) {
-          displayObjectProps.push(
-            <li key={i}>
-              <strong>{key}</strong>
-              {pendingSpinner}
-              <br />
-              {`${displayData[key]}`}
-            </li>,
-          );
-        }
-
-        i++;
-      });
-
-      return <ul>{displayObjectProps}</ul>;
-    }
 
     return (
       <div className={"fractalContainer "+frame}>
