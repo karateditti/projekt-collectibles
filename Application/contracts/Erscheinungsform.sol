@@ -1,8 +1,12 @@
 pragma solidity^0.5.0;
 
 import "./Zugangsbeschraenkung.sol";
+import "./oraclizeAPI.sol";
 
 contract Erscheinungsform is Zugangsbeschraenkung {
+  uint public randomNumber;
+  event LogNewTemperature(string number);
+  event LogNewOraclizeQuery(string description);
 
     struct Farbe{
         uint rot;
@@ -31,6 +35,10 @@ contract Erscheinungsform is Zugangsbeschraenkung {
         uint vorgaenger1;
         uint vorgaenger2;
 
+    }
+
+    constructor() public{
+      OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);//EDIT, correct OAR
     }
 
     Fraktal[] fraktale;
@@ -82,4 +90,46 @@ contract Erscheinungsform is Zugangsbeschraenkung {
         return fraktale[id].gen;
     }
 
+
+    function __callback(bytes32 queryId, string memory result) public{
+      if(msg.sender != oraclize_cbAddress()) revert();
+
+      emit LogNewTemperature(result);
+
+      randomNumber = parseInt(result);
+    }
+
+    function update(uint rangeMax) public payable{
+      emit LogNewOraclizeQuery("test should appear");
+
+      if (oraclize_getPrice("WolframAlpha") > address(this).balance) {
+            emit LogNewOraclizeQuery("Oraclize query was NOT sent, please add some ETH to cover for the query fee");
+        } else {
+            emit LogNewOraclizeQuery("Oraclize query was sent, standing by for the answer..");
+            bytes32 res = oraclize_query("WolframAlpha",string(abi.encodePacked("random number between 1 and", " ", uintToString(rangeMax))));
+      }
+   }
+
+   function getRandomNumber2() public view returns (uint){
+      return temperature2;
+   }
+
+   function uintToString(uint _i) internal pure returns (string memory _uintAsString) {
+       if (_i == 0) {
+           return "0";
+       }
+       uint j = _i;
+       uint len;
+       while (j != 0) {
+           len++;
+           j /= 10;
+       }
+       bytes memory bstr = new bytes(len);
+       uint k = len - 1;
+       while (_i != 0) {
+           bstr[k--] = byte(uint8(48 + _i % 10));
+           _i /= 10;
+       }
+       return string(bstr);
+  }
 }
