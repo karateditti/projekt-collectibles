@@ -3,9 +3,9 @@ pragma solidity^0.5.0;
 import "./Zugangsbeschraenkung.sol";
 import "./oraclizeAPI.sol";
 
-contract Erscheinungsform is Zugangsbeschraenkung {
+contract Erscheinungsform is Zugangsbeschraenkung,usingOraclize  {
   uint public randomNumber;
-  event LogNewTemperature(string number);
+  event LogNewRandomNumber(string number);
   event LogNewOraclizeQuery(string description);
 
     struct Farbe{
@@ -38,7 +38,8 @@ contract Erscheinungsform is Zugangsbeschraenkung {
     }
 
     constructor() public{
-      OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);//EDIT, correct OAR
+      //EDIT to correct OAR
+      OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
     }
 
     Fraktal[] fraktale;
@@ -94,7 +95,7 @@ contract Erscheinungsform is Zugangsbeschraenkung {
     function __callback(bytes32 queryId, string memory result) public{
       if(msg.sender != oraclize_cbAddress()) revert();
 
-      emit LogNewTemperature(result);
+      emit LogNewRandomNumber(result);
 
       randomNumber = parseInt(result);
     }
@@ -111,7 +112,7 @@ contract Erscheinungsform is Zugangsbeschraenkung {
    }
 
    function getRandomNumber2() public view returns (uint){
-      return temperature2;
+      return randomNumber;
    }
 
    function uintToString(uint _i) internal pure returns (string memory _uintAsString) {
