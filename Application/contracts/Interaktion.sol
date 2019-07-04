@@ -10,6 +10,11 @@ contract Interaktion is Generierung {
         fraktale[id].zumKombinieren = true;
     }
 
+    function zurKombinationEntfernen(uint id) public{
+        require(ownerOf(id) == msg.sender);
+        fraktale[id].zumKombinieren = false;
+    }
+
     function getAllzurKombinationFreigegeben() public view returns(uint[] memory){
         // Anzahl der zum Tausch verfügbaren Fraktalen muss zuerst ermittelt werden, um ein entsprechendes Array erzeugen zu können. Dynamische Arrays sind innerhalb einer Methode nicht umsetzbar (Solidity 0.5.0)
         uint amount = 0;

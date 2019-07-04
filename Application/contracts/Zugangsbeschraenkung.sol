@@ -1,6 +1,8 @@
 pragma solidity ^0.5.0;
 
-contract Zugangsbeschraenkung {
+import "./Hilfsfunktionen.sol";
+
+contract Zugangsbeschraenkung is Hilfsfunktionen{
     constructor() public {verwaltendeEinheit = msg.sender;}
     address payable verwaltendeEinheit;
 

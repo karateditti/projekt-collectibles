@@ -28,7 +28,7 @@ contract Generierung is Eigentumsdefinition{
         }
     }
 
-    function singlepoint_crossover(uint id_1, uint id_2) public view returns(FraktalErscheinung memory){
+    function singlepoint_crossover(uint id_1, uint id_2) public returns(FraktalErscheinung memory){
         uint[] memory kind  = new uint[](11);
         uint random_point = getRandomNumber(10);
         uint[11] memory  erscheinungId_1 = getFraktalFromId(id_1);

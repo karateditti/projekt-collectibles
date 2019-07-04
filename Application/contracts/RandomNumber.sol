@@ -10,17 +10,13 @@ contract RandomNumber is usingOraclize{
 
     constructor() public{
       //EDIT to correct OAR
-        OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
-        update(
-
-        );
+        OAR = OraclizeAddrResolverI(0x41defa2814564217c11F7D4886548A69015aa8c7);
+        update();
     }
 
     function __callback(bytes32 queryId, string memory result) public{
       if(msg.sender != oraclize_cbAddress()) revert();
-
       emit LogNewRandomNumber(result);
-
       randomNumber = parseInt(result);
     }
 
@@ -29,7 +25,7 @@ contract RandomNumber is usingOraclize{
         bytes32 res =oraclize_query(
             "URL",
             "json(https://api.random.org/json-rpc/2/invoke).result.random.data.0",
-            '\n{"jsonrpc":"2.0","method":"generateIntegers","params":{"apiKey":"980f0b68-1810-4803-aca0-717f07b58160","n":30,"min":1,"max":1000,"replacement":true,"base":10},"id":2994}');
+            '\n{"jsonrpc":"2.0","method":"generateIntegers","params":{"apiKey":"980f0b68-1810-4803-aca0-717f07b58160","n":1,"min":1,"max":1000,"replacement":true,"base":10},"id":2994}');
     }
 
    function getRandomNumber2() public view returns (uint){

@@ -1,9 +1,11 @@
 pragma solidity^0.5.0;
 
 import "./Zugangsbeschraenkung.sol";
-import "./RandomNumber.sol";
 
 contract Erscheinungsform is Zugangsbeschraenkung{
+
+    RandomNumber rndm;
+    uint[] testresult;
 
     struct Farbe{
         uint rot;
@@ -46,31 +48,6 @@ contract Erscheinungsform is Zugangsbeschraenkung{
         return (x);
     }
 
-    function getRandomNumber(uint rangeMax) public view returns(uint){
-        return uint(blockhash(block.number-1))%rangeMax +1;
-    }
-
-    function getRandomNumbers(uint rangeMax, uint amount) public view returns(uint[] memory){
-        uint[] memory arrayNumbers = new uint[](amount);
-        for(uint i=0; i <arrayNumbers.length;i++){
-            arrayNumbers[i]=uint(blockhash(block.number-i+1))%rangeMax +1;
-        }
-        return arrayNumbers;
-    }
-
-    function getRandomNumberRarity() internal view returns(uint){
-        uint random = getRandomNumber(100);
-        uint[3] memory weight=[uint(31),71,101];
-        uint[3] memory rarity=[uint(1),2,3];
-        for(uint i=0;i<weight.length;i++){
-            if(random<weight[i]){
-                return rarity[i];
-            }
-
-        }
-        return 0;
-    }
-
     function getZumTausch(uint id) internal view returns (bool){
         return fraktale[id].zumTausch;
     }
@@ -83,7 +60,4 @@ contract Erscheinungsform is Zugangsbeschraenkung{
         return fraktale[id].gen;
     }
 
-    function testrandom() public{
-        RandomNumber rnd = new RandomNumber();
-    }
 }
