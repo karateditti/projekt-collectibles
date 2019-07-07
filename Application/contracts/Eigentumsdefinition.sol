@@ -8,7 +8,6 @@ contract Eigentumsdefinition is ERC721Full, Erscheinungsform {
     // Muss angepasst werden, dass bei id = 999999999999999 kein "echtes" fraktal sein darf
     uint constant initialerVorgaenger = 999999999999999;
     address constant addresseInitialeGueter = address(0x123);
-    uint[] random;
     constructor() ERC721Full("Fraktal", "FRK") public {}
 
     //initial mint - darf nur von verwaltender Einheit durchgeführt werden

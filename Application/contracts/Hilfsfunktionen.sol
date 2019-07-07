@@ -10,15 +10,6 @@ contract Hilfsfunktionen{
     uint indexRandomNumbers;
 
 
-    function getRandomNumbers(uint rangeMax, uint amount) public view returns(uint[] memory){
-        uint[] memory arrayNumbers = new uint[](amount);
-        for(uint i=0; i <arrayNumbers.length;i++){
-            arrayNumbers[i]=uint(blockhash(block.number-i+1))%rangeMax +1;
-        }
-        return arrayNumbers;
-    }
-
-
     function getRandomNumberRarity() internal returns(uint){
         uint random = getRandomNumber(100);
         uint[3] memory weight=[uint(31),71,101];
@@ -38,7 +29,7 @@ contract Hilfsfunktionen{
         }
     }
 
-    function substring(string memory str) public returns(string memory){
+    function substring(string memory str) internal returns(string memory){
         bytes memory strBytes = bytes(str);
         bytes memory result = new bytes(strBytes.length-2);
         for(uint i = 1; i < strBytes.length-1; i++) {

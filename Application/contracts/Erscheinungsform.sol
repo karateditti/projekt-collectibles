@@ -1,11 +1,9 @@
 pragma solidity^0.5.0;
 
 import "./Zugangsbeschraenkung.sol";
+import "./Hilfsfunktionen.sol";
 
-contract Erscheinungsform is Zugangsbeschraenkung{
-
-    RandomNumber rndm;
-    uint[] testresult;
+contract Erscheinungsform is Zugangsbeschraenkung, Hilfsfunktionen{
 
     struct Farbe{
         uint rot;

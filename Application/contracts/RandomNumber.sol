@@ -1,6 +1,5 @@
 pragma solidity^0.5.0;
 
-import "./Zugangsbeschraenkung.sol";
 import "./oraclizeAPI.sol";
 
 contract RandomNumber is usingOraclize{
@@ -10,7 +9,7 @@ contract RandomNumber is usingOraclize{
 
     constructor() public{
       //EDIT to correct OAR
-        OAR = OraclizeAddrResolverI(0x41defa2814564217c11F7D4886548A69015aa8c7);
+        OAR = OraclizeAddrResolverI(0xd2A4C22D8845be9545212748dDc75e8a8a17E99C);
         update();
     }
 
@@ -32,22 +31,4 @@ contract RandomNumber is usingOraclize{
       return randomNumber;
    }
 
-   function uintToString(uint _i) internal pure returns (string memory _uintAsString) {
-       if (_i == 0) {
-           return "0";
-       }
-       uint j = _i;
-       uint len;
-       while (j != 0) {
-           len++;
-           j /= 10;
-       }
-       bytes memory bstr = new bytes(len);
-       uint k = len - 1;
-       while (_i != 0) {
-           bstr[k--] = byte(uint8(48 + _i % 10));
-           _i /= 10;
-       }
-       return string(bstr);
-  }
 }
