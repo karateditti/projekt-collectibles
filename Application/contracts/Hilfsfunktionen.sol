@@ -1,19 +1,20 @@
 pragma solidity ^0.5.0;
 
 import "./RandomNumber.sol";
-contract Hilfsfunktionen{
+import "./Zugangsbeschraenkung.sol";
 
-    uint constant anzahlInitialRndm = 100;
-    uint constant rndmBound = 70;
-    RandomNumber[] rndm;
-    uint[] randomNumbers;
-    uint indexRandomNumbers;
+contract Hilfsfunktionen is Zugangsbeschraenkung{
+
+    uint constant anzahlInitialRndm = 100; //Anzahl initial erzeugter Zufallszahlen
+    RandomNumber[] rndm; // Array an Objekten von RandomNumber. Hier werden die API-Aufrufe ausgeführt
+    uint[] randomNumbers; // Array an generierten Zufallszahlen
+    uint indexRandomNumbers; // Hochzählen des Indexs, wenn Zufallszahl bereits genutzt wurde.
 
 
-    function getRandomNumberRarity() internal returns(uint){
-        uint random = getRandomNumber(100);
-        uint[3] memory weight=[uint(31),71,101];
-        uint[3] memory rarity=[uint(1),2,3];
+    function getRandomNumberRarity() internal returns(uint){ //Erstellung einer Zufallszahl nach diskreter Verteilungsfunktion
+        uint random = getRandomNumber(101); // Zufallszahl zwischen 1 und 101
+        uint[3] memory weight=[uint(32),72,102]; // Gewichtung der Wahrscheinlichkeit für 1,2 und 3
+        uint[3] memory rarity=[uint(1),2,3]; // Raritäten 1 - 3
         for(uint i=0;i<weight.length;i++){
             if(random<weight[i]){
                 return rarity[i];
@@ -23,13 +24,13 @@ contract Hilfsfunktionen{
         return 0;
     }
 
-    function initialRandomNumbers() public{
+    function initialRandomNumbers() public onlyVE{ // Erzeugt initial 100 Zufallszahlen durch die Random.org API
         for(uint i = 1; i < anzahlInitialRndm +1; i++) {
             rndm.push(new RandomNumber());
         }
     }
 
-    function substring(string memory str) internal returns(string memory){
+    function substring(string memory str) internal returns(string memory){ // Entfernt erstes und letztes Element einer Zeichenkette
         bytes memory strBytes = bytes(str);
         bytes memory result = new bytes(strBytes.length-2);
         for(uint i = 1; i < strBytes.length-1; i++) {
@@ -38,7 +39,7 @@ contract Hilfsfunktionen{
         return string(result);
     }
 
-    function split(string memory _base, string memory _value)
+    function split(string memory _base, string memory _value) // Trennt Zeichenkette durch ein Trennzeichen in ein Array
     internal
     returns (string[] memory splitArr){
         bytes memory _baseBytes = bytes(_base);
@@ -97,61 +98,21 @@ contract Hilfsfunktionen{
         return -1;
     }
 
-    function setRndm() public returns(uint[] memory){
+    function setRndm() public onlyVE returns(uint[] memory){ // Schreibt die Zufallszahlen aus den einzelnen API-Aufrufen in das Array an Zufallszahlen
         for(uint i=0; i<rndm.length;i++){
-       // string memory x = rndm[i].getRandomNumber2();
-       // string memory result_trimmed = substring(x);
-       // string[] memory splitted_result = split(result_trimmed,",");
-            randomNumbers.push(rndm[i].getRandomNumber2());
-
+            randomNumbers.push(rndm[i].getRandomNumberResult());
         }
         return randomNumbers;
 
     }
 
-    function getRandomNumber(uint rangeMax) public returns(uint){
+    function getRandomNumber(uint rangeMax) internal returns(uint){ //Erzeugt eine Zufallszahl innerhalb einer Range von 1 - rangeMax
         if(randomNumbers.length==0 ||randomNumbers.length== anzahlInitialRndm -1 ){
             setRndm();
         }
-        if(randomNumbers.length==rndmBound){
-            initialRandomNumbers();
-        }
         uint i = indexRandomNumbers;
-        indexRandomNumbers++;
+        indexRandomNumbers++; // Index + 1, damit Zufallszahl nicht erneut verwendet wird.
         return (randomNumbers[i]%rangeMax +1);
-    }
-
-    function getLengthRndm() public view returns(uint){
-        return rndm.length;
-    }
-
-    function getLengthIntRndm() public view returns(uint){
-        return randomNumbers.length;
-    }
-
-    function parseInt(string memory _a, uint _b) internal pure returns (uint _parsedInt) {
-        bytes memory bresult = bytes(_a);
-        uint mint = 0;
-        bool decimals = false;
-        for (uint i = 0; i < bresult.length; i++) {
-            if ((uint(uint8(bresult[i])) >= 48) && (uint(uint8(bresult[i])) <= 57)) {
-                if (decimals) {
-                    if (_b == 0) {
-                        break;
-                    } else {
-                        _b--;
-                    }
-                }
-                mint *= 10;
-                mint += uint(uint8(bresult[i])) - 48;
-            } else if (uint(uint8(bresult[i])) == 46) {
-                decimals = true;
-            }
-        }
-        if (_b > 0) {
-            mint *= 10 ** _b;
-        }
-        return mint;
     }
 }
 

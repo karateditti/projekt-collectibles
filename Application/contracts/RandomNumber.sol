@@ -8,8 +8,8 @@ contract RandomNumber is usingOraclize{
   event LogNewOraclizeQuery(string description);
 
     constructor() public{
-      //EDIT to correct OAR
-        OAR = OraclizeAddrResolverI(0xd2A4C22D8845be9545212748dDc75e8a8a17E99C);
+      //OAR aus Ethereum-bridge übernehmen
+        OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
         update();
     }
 
@@ -19,15 +19,16 @@ contract RandomNumber is usingOraclize{
       randomNumber = parseInt(result);
     }
 
+    // API-Aufruf von random.org
     function update() public payable{
             emit LogNewOraclizeQuery("Oraclize query was sent, standing by for the answer..");
         bytes32 res =oraclize_query(
             "URL",
             "json(https://api.random.org/json-rpc/2/invoke).result.random.data.0",
-            '\n{"jsonrpc":"2.0","method":"generateIntegers","params":{"apiKey":"980f0b68-1810-4803-aca0-717f07b58160","n":1,"min":1,"max":1000,"replacement":true,"base":10},"id":2994}');
+            '\n{"jsonrpc":"2.0","method":"generateIntegers","params":{"apiKey":"5166d76a-14b3-42f3-a14b-52e4997d1c29","n":1,"min":1,"max":1000,"replacement":true,"base":10},"id":2994}');
     }
 
-   function getRandomNumber2() public view returns (uint){
+   function getRandomNumberResult() public view returns (uint){
       return randomNumber;
    }
 

@@ -7,13 +7,15 @@ import "./Eigentumsdefinition.sol";
 contract Generierung is Eigentumsdefinition{
 
 
-
+    // Struktur für Kombinationen
     struct Combination{
         uint id_1;
         uint id_2;
     }
+    // Array mit allen bereits durchgeführten Kombinationen
     Combination[] combinations;
 
+    // Überprüfung, ob 1.) Kombination bereits durchgeführt wurde und 2.) ob Ein Teil der Kombination der Vorgänger vom anderen Teil ist
     function canCombine(uint id_1, uint id_2) public view returns(bool){
         if(fraktale[id_1].vorgaenger1 != id_2 && fraktale[id_2].vorgaenger1 != id_1 && fraktale[id_1].vorgaenger2 != id_2 && fraktale[id_2].vorgaenger2 != id_1){
             for(uint i= 0;i<combinations.length; i++){
@@ -28,6 +30,7 @@ contract Generierung is Eigentumsdefinition{
         }
     }
 
+    // Single-point crossover Umsetzung
     function singlepoint_crossover(uint id_1, uint id_2) internal returns(FraktalErscheinung memory){
         uint[] memory kind  = new uint[](11);
         uint random_point = getRandomNumber(10);
@@ -47,11 +50,12 @@ contract Generierung is Eigentumsdefinition{
 
     }
 
+    // Erzeugung eines Fraktals basierend auf den zwei Input-Fraktalen
     function combine(uint id_1, uint id_2) internal returns(uint){
         require(canCombine(id_1,id_2));
             FraktalErscheinung memory erscheinung= singlepoint_crossover(id_1,id_2);
             uint gen_new = (id_1 < id_2 ? id_1 : id_2) + 1;
-            Fraktal memory _fraktal = Fraktal(erscheinung,gen_new,false,false,id_1,id_2);
+            Fraktal memory _fraktal = Fraktal(erscheinung,gen_new,false,id_1,id_2);
             uint _id = fraktale.push(_fraktal) - 1;
             _mint(msg.sender, _id);
             combinations.push(Combination(id_1,id_2));
