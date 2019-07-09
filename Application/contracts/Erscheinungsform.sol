@@ -51,7 +51,7 @@ contract Erscheinungsform is Hilfsfunktionen{
         return (x);
     }
 
-    function getZumKombinieren(uint id) internal view returns (bool){
+    function getZumKombinieren(uint id) public view returns (bool){
         return fraktale[id].zumKombinieren;
     }
 

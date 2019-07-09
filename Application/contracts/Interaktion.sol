@@ -39,6 +39,26 @@ contract Interaktion is Generierung {
         return fraktaleZumKombinieren;
     }
 
+    function getAllzurKombinationFreigegebenExklusiveEigene() public view returns(uint[] memory){
+        // Anzahl der zum Tausch verfügbaren Fraktalen muss zuerst ermittelt werden, um ein entsprechendes Array erzeugen zu können. Dynamische Arrays sind innerhalb einer Methode nicht umsetzbar (Solidity 0.5.0)
+        uint amount = 0;
+        for(uint i= 0;i<fraktale.length; i++){
+            if(fraktale[i].zumKombinieren==true && ownerOf(i)!=msg.sender){
+                amount++;
+            }
+        }
+        //Array mit IDs der entsprechenden Fraktalen wird erzeugt
+        uint[] memory fraktaleZumKombinieren = new uint[](amount);
+        uint j = 0;
+        for(uint i=0;i<fraktale.length; i++){
+            if(fraktale[i].zumKombinieren==true && ownerOf(i)!=msg.sender){
+                fraktaleZumKombinieren[j] = uint(i);
+                j++;
+            }
+        }
+        return fraktaleZumKombinieren;
+    }
+
     // Kombination eines eigenen Fraktals mit einem Fraktal das zur Kombination Freigegeben wurde
     function combineExternal (uint id_1, uint id_2) public{
         require(fraktale[id_1].zumKombinieren==true);
