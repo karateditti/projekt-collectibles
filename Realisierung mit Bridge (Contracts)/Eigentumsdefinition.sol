@@ -20,22 +20,12 @@ contract Eigentumsdefinition is ERC721Full, Erscheinungsform {
             _mint(msg.sender, _id); // ERC721 OpenZeppelin Implementierung
     }
 
-    function mintDemo(uint f1,uint f2,uint f3, uint winkel, uint polygon, uint segmente, uint spiegelung, uint iterationen, uint raritaet, uint skew, uint arms) public {
-        Farbe memory farbe = Farbe(f1,f2,f3); // RGB-Code
-        // Erscheinung mit: Winkel(max 360), Polygon(max 6), Segmente(max 5), Spiegelung(max 2), Iterationen(max 3), Rarität(max 3), farbe(3 x max 255), skew(max 90), arms(max 2)
-        FraktalErscheinung memory erscheinung = FraktalErscheinung(winkel,polygon,segmente,spiegelung,iterationen, raritaet,farbe,skew,arms);
-        Fraktal memory _fraktal = Fraktal(erscheinung,0,false,initialerVorgaenger,initialerVorgaenger);
-        uint _id = fraktale.push(_fraktal) - 1;
-        _mint(msg.sender, _id); // ERC721 OpenZeppelin Implementierung
-    }
-
     // Nutzer soll zu Beginn Fraktale ohne weitere Bedingungen bekommen
     function firstMint() public{
         require(balanceOf(msg.sender)==0); // Falls Nutzer noch keine Fraktale besitzt
-            // initial Fraktale festgelegt, die erzeugt werden sollen, wegen Problemen mit der Zufallszahl
-            mintDemo(251,0,255,120,3,4,0,3,3,0,1);
-            mintDemo(0,0,255,960,6,3,0,1,2,550,1);
-            mintDemo(0,255,255,1005,5,4,1,2,1,165,1);
+            for (uint i = 0; i < anzahlStartFraktale;i++) {
+            mint();
+            }
     }
 
     // Alle Fraktale von einem Nutzer ausgeben

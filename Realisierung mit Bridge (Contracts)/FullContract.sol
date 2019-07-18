@@ -9,5 +9,6 @@ import "./Interaktion.sol";
 
 contract FullContract is Interaktion{
     constructor() public{
+        initialRandomNumbers(); // initial werden Zufallszahlen über das Oracle erzeugt.
     }
 }

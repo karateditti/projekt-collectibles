@@ -8,6 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Vorraussetzungen
 
 Benötigt werden nodejs sowie der npm Paketmanager.
+Download unter [nodejs.org](https://nodejs.org/en/)
 
 ```
 nodejs>=v8.10.0
@@ -29,6 +30,9 @@ Verzeichnis des Front-Ends der Platform. Basiert auf [Drizzle](https://github.co
 ### Installation
 
 Zunächst ist das Repository zu klonen.
+```
+$ git clone https://github.com/karateditti/projekt-collectibles
+```
 Mittels npm müssen die benötigten Paketabhängigkeit jeweils für das Front- und Back-End installiert werden.
 
 ```
@@ -44,33 +48,29 @@ Truffle v5.0.19 (core: 5.0.19)
 Solidity v0.5.0 (solc-js)
 Node v8.10.0
 Web3.js v1.0.0-beta.37
-
-```
-
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
 ```
 
 ## Deployment
+### Frontend
+Das Frontend kann über `npm start` gestartet werden.
+```
+~/projekt-collectibles/Application$ npm start
+```
+###Backend/Smart Contracts
 
-Add additional notes about how to deploy this on a live system
+Um die Smart Contracts zu deployen, wird entsprechend eine Blockchain benötigt.
+Lokal kann diese über [Ganache](https://www.trufflesuite.com/ganache) erzeugt werden.
+
+Eine Anleitung zur Installation von Ganache ist hier zu finden: [Ganache Installation](https://www.trufflesuite.com/docs/ganache/quickstart).
+
+Empfohlene Einstellungen in Ganache: 
+
+**Server:**
+![Server](https://github.com/karateditti/projekt-collectibles/blob/master/imgWiki/ganache_screenshot1.PNG)
+**Accounts & Keys:**
+![AccountsKeys](https://github.com/karateditti/projekt-collectibles/blob/master/imgWiki/ganache_screenshot2.PNG)
+**Chain:**
+![Chain](https://github.com/karateditti/projekt-collectibles/blob/master/imgWiki/ganache_screenshot3.PNG)
 
 ## Built With
 

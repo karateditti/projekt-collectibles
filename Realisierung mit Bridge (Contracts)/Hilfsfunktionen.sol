@@ -5,10 +5,15 @@ import "./Zugangsbeschraenkung.sol";
 
 contract Hilfsfunktionen is Zugangsbeschraenkung{
 
+    uint constant anzahlInitialRndm = 100; //Anzahl initial erzeugter Zufallszahlen
+    RandomNumber[] rndm; // Array an Objekten von RandomNumber. Hier werden die API-Aufrufe ausgeführt
+    uint[] randomNumbers; // Array an generierten Zufallszahlen
+    uint indexRandomNumbers; // Hochzählen des Indexs, wenn Zufallszahl bereits genutzt wurde.
+
 
     function getRandomNumberRarity() internal returns(uint){ //Erstellung einer Zufallszahl nach diskreter Verteilungsfunktion
         uint random = getRandomNumber(101); // Zufallszahl zwischen 1 und 101
-        uint[3] memory weight=[uint(32),72,102]; // Gewichtung der Wahrscheinlichkeit für 1,2 und 3
+        uint[3] memory weight=[uint(52),92,102]; // Gewichtung der Wahrscheinlichkeit für 1,2 und 3
         uint[3] memory rarity=[uint(1),2,3]; // Raritäten 1 - 3
         for(uint i=0;i<weight.length;i++){
             if(random<weight[i]){
@@ -17,6 +22,12 @@ contract Hilfsfunktionen is Zugangsbeschraenkung{
 
         }
         return 0;
+    }
+
+    function initialRandomNumbers() public onlyVE{ // Erzeugt initial 100 Zufallszahlen durch die Random.org API
+        for(uint i = 1; i < anzahlInitialRndm +1; i++) {
+            rndm.push(new RandomNumber());
+        }
     }
 
     function substring(string memory str) internal returns(string memory){ // Entfernt erstes und letztes Element einer Zeichenkette
@@ -87,9 +98,21 @@ contract Hilfsfunktionen is Zugangsbeschraenkung{
         return -1;
     }
 
+    function setRndm() public onlyVE returns(uint[] memory){ // Schreibt die Zufallszahlen aus den einzelnen API-Aufrufen in das Array an Zufallszahlen
+        for(uint i=0; i<rndm.length;i++){
+            randomNumbers.push(rndm[i].getRandomNumberResult());
+        }
+        return randomNumbers;
+
+    }
 
     function getRandomNumber(uint rangeMax) internal returns(uint){ //Erzeugt eine Zufallszahl innerhalb einer Range von 1 - rangeMax
-        return (uint(blockhash(block.number-1))%rangeMax + 1);
+        if(randomNumbers.length==0 ||randomNumbers.length== anzahlInitialRndm -1 ){
+            setRndm();
+        }
+        uint i = indexRandomNumbers;
+        indexRandomNumbers++; // Index + 1, damit Zufallszahl nicht erneut verwendet wird.
+        return (randomNumbers[i]%rangeMax +1);
     }
 }
 
