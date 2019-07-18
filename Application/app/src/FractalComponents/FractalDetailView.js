@@ -43,7 +43,7 @@ class FractalDetailView extends React.Component {
     }
   }
   render() {
-      var angle,arms,poly,segments,mirror, depth;
+      var angle,arms,poly,segments,mirror, depth,color,skew;
     if(this.state.fractal_el){
 
         angle =this.state.fractal_el.getAttribute('data-angle');
@@ -52,6 +52,8 @@ class FractalDetailView extends React.Component {
         segments =this.state.fractal_el.getAttribute('data-segments');
         mirror =this.state.fractal_el.getAttribute('data-mirror');
         depth =this.state.fractal_el.getAttribute('data-depth');
+        color = this.state.fractal_el.getAttribute('data-color');
+        skew = this.state.fractal_el.getAttribute('data-skew');
     }
     return (
       <>
@@ -60,7 +62,7 @@ class FractalDetailView extends React.Component {
             <Modal.Title>Fractal</Modal.Title>
           </Modal.Header>
           <Modal.Body className="text-center">
-              <canvas id="render-fractal-lg" width="550" height="550" data-angle={angle} data-arms={arms} data-poly={poly} data-segments={segments} data-mirror={mirror} data-depth={depth}></canvas>
+              <canvas id="render-fractal-lg" width="550" height="550" data-angle={angle} data-arms={arms} data-poly={poly} data-segments={segments} data-mirror={mirror} data-depth={depth} data-color={color} data-skew={skew}></canvas>
               </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleClose}>

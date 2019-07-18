@@ -9,6 +9,7 @@ class FractalDisplay extends Component {
 
     // This binding is necessary to make `this` work in the callback
     this.handleClick = this.handleClick.bind(this);
+    this.handleRarity = this.handleRarity.bind(this);
     // Fetch initial value from chain and return cache key for reactive updates.
     var methodArgs = this.props.methodArgs ? this.props.methodArgs : [];
 
@@ -39,7 +40,35 @@ class FractalDisplay extends Component {
     }
   }
    componentDidMount() {
+      this.handleRarity();
+   }
+   handleRarity(){
+      try {
+        console.log("props is : "+this.props.fractalId);
+        var fract_container = document.getElementById("fract-"+this.props.fractalId).parentElement;
+        console.log(fract_container);
+        switch (parseInt(document.getElementById("fract-"+this.props.fractalId).dataset.rarity)) {
+          case 2:
+            fract_container.style.boxShadow = "inset 1px 1px 10px 0 rgba(245, 66, 111, 0.9)";
+            break;
 
+            case 1:
+            fract_container.style.boxShadow = "inset 1px 1px 10px 0 rgba(72, 245, 66, 0.9)";
+            break;
+
+            case 3:
+            fract_container.style.boxShadow = "inset 1px 1px 10px 0 rgba(66, 135, 245, 0.9)";
+            break;
+
+            default:
+            //fract_container.style.boxShadow = "inset 1px 1px 10px 0 rgba(0, 10, 20, 0.9)";
+            break;
+        }
+      }
+      catch (e) {
+      console.log("handle rarity: "+e);
+      setTimeout(this.handleRarity, 1000);
+      }
    }
  handleClick() {
     this.setState(state => ({
@@ -90,7 +119,13 @@ class FractalDisplay extends Component {
     if (this.props.render) {
       return this.props.render(displayData);
     }
-
+    var rgbToHex = function (rgb) {
+        var hex = Number(rgb).toString(16);
+        if (hex.length < 2) {
+             hex = "0" + hex;
+        }
+        return hex;
+    };
     // If return value is an
     /*
     if (Array.isArray(displayData)) {
@@ -103,8 +138,8 @@ class FractalDisplay extends Component {
         );
       });
   */
-      return <canvas id={"fract-"+this.props.fractalId} className= {'render-fractal '+(this.state.isToggleOn ? 'fractal-toggled' : '')} width="300" height="300"
-                     data-angle={displayData[0]} data-arms="0" data-poly={displayData[1]} data-segments={displayData[2]} data-mirror={displayData[3]} data-depth={displayData[4]}/>;
+      return <canvas id={"fract-"+this.props.fractalId} className= {'render-fractal '+(this.state.isToggleOn ? 'fractal-toggled' : '')} width="300" height="300" data-id={this.props.fractalId}
+                     data-angle={displayData[0]} data-arms={displayData[10]} data-poly={displayData[1]} data-segments={displayData[2]} data-mirror={displayData[3]} data-depth={displayData[4]} data-rarity={displayData[5]} data-skew={displayData[9]} data-color={rgbToHex(displayData[6])+rgbToHex(displayData[7])+rgbToHex(displayData[8])} />;
 
     var frame = "fractal-default";
     //if(displayData.includes("115")){

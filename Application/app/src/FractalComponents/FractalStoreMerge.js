@@ -15,7 +15,7 @@ const translateType = type => {
   }
 };
 
-class FractalMerge extends Component {
+class FractalStoreMerge extends Component {
   constructor(props, context) {
     super(props);
 
@@ -49,7 +49,7 @@ class FractalMerge extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    window.FractalMergeControl.handleClose();
+    window.FractalStoreMergeControl.handleClose();
     const convertedInputs = this.inputs.map(input => {
       if (input.type === "bytes32") {
         return this.utils.toHex(this.state[input.name]);
@@ -87,12 +87,11 @@ class FractalMerge extends Component {
     }
   }
   componentDidMount() {
-    var inputFields = document.getElementsByClassName("inputMerge");
-    for(var i = 0; i < inputFields.length; i++)
-    {
-      this.setNativeValue(inputFields[i], window.fractalsOfUser.getSelected()[i]);
-      inputFields[i].dispatchEvent(new Event('input', { bubbles: true }));
-    }
+        var inputFields = document.getElementsByClassName("inputMergeStore");
+      this.setNativeValue(inputFields[0], window.FractalStoreMergeControl.getFractalStoreId());
+      inputFields[0].dispatchEvent(new Event('input', { bubbles: true }));
+      this.setNativeValue(inputFields[1], window.fractalsOfUser.getSelected()[0]);
+      inputFields[1].dispatchEvent(new Event('input', { bubbles: true }));
   }
 
   render() {
@@ -120,10 +119,9 @@ class FractalMerge extends Component {
           return (
             <input
               key={input.name}
-              className={'inputMerge hidden'}
+              className={'inputMergeStore hidden'}
               type={'number'}
               name={input.name}
-              //value={window.fractalsOfUser.getSelected()[index]}
               placeholder={inputLabel}
               onChange={this.handleInputChange}
             />
@@ -138,11 +136,11 @@ class FractalMerge extends Component {
   }
 }
 
-FractalMerge.contextTypes = {
+FractalStoreMerge.contextTypes = {
   drizzle: PropTypes.object,
 };
 
-FractalMerge.propTypes = {
+FractalStoreMerge.propTypes = {
   contract: PropTypes.string.isRequired,
   method: PropTypes.string.isRequired,
   sendArgs: PropTypes.object,
@@ -160,4 +158,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default drizzleConnect(FractalMerge, mapStateToProps);
+export default drizzleConnect(FractalStoreMerge, mapStateToProps);

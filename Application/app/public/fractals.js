@@ -93,11 +93,16 @@ var fract=(function (){
             fract.arms.update(parseInt(canvas.dataset.arms));
             fract.depth.update(parseInt(canvas.dataset.depth));
             fract.mirror.update(parseInt(canvas.dataset.mirror));
-            fract.zoomnudge(5)
+            fract.arms.update(parseInt(canvas.dataset.arms));
+            fract.color.fractal="#"+canvas.dataset.color;
+            fract.skewangle.update(parseInt(canvas.dataset.skew));
+            fract.zoomnudge(5);
             fract.al.render();
+            fract.fixsize();
         }
-        catch{
-    console.log("caught ex");
+
+        catch(e){
+    console.log("caught ex " +e);
         }
 	};
 

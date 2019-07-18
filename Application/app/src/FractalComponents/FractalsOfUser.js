@@ -6,6 +6,7 @@ import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 
 import { drizzleConnect } from "drizzle-react";
 import PropTypes from "prop-types";
+import {FractalIsShared} from "../FractalComponents";
 
 class FractalsOfUser extends React.Component {
   constructor(props, context) {
@@ -15,7 +16,6 @@ class FractalsOfUser extends React.Component {
     var methodArgs = this.props.methodArgs ? this.props.methodArgs : [];
     window.fractalsOfUser = this;
     this.contracts = context.drizzle.contracts;
-    this.setState({selected:[]});
     this.state = {
         selected:[],
       dataKey: this.contracts["FullContract"].methods[
@@ -43,7 +43,6 @@ class FractalsOfUser extends React.Component {
     }
   }
   handleSelect(id){
-      console.log("got the id: "+id);
       var selected = this.state.selected;
       if(this.state.selected.length < 2){
           if(!selected.includes(id)) {
@@ -61,7 +60,6 @@ class FractalsOfUser extends React.Component {
         selected.splice(index, 1);
         this.setState({selected: selected});
       }
-      console.log("selected is: "+this.state.selected);
   }
   getSelected(){
     if(!this.state.selected)return 0;
@@ -121,9 +119,8 @@ class FractalsOfUser extends React.Component {
      <Button variant={(this.state.selected.includes(datum) ? 'success' : 'secondary')} size="sm" onClick={(() => this.handleSelect(datum))} disabled={(this.state.selected.length === 2 && !this.state.selected.includes(datum) ? 'disabled' : '')}>
       {(this.state.selected.includes(datum) ? 'Deselect' : 'Select')}
     </Button>
-    <Button variant="light" size="sm">
-      Share
-    </Button>
+    <FractalIsShared contract="FullContract" method="getZumKombinieren" methodArgs={[datum]} />
+
   </ButtonToolbar></div> <FractalDisplay contract="FullContract" method="getFraktalFromId" methodArgs={[datum]} fractalId={datum}/></Col>);
       });
               while(displayFractals.length%3 !== 0){
@@ -134,7 +131,7 @@ class FractalsOfUser extends React.Component {
     }
 
   }
-   componentDidMount() {
+   componentDidUpdate() {
        setTimeout(eval, 1000, 'initialize_fractals();');
        return;
    }

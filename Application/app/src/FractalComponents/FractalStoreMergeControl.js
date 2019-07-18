@@ -13,14 +13,16 @@ import {
 } from "drizzle-react-components";
 import {FractalFirstMint, FractalMerge, FractalCanCombine} from "../FractalComponents";
 import FractalStoreMerge from "./FractalStoreMerge";
-class FractalMergeControl extends React.Component {
+class FractalStoreMergeControl extends React.Component {
   constructor(props, context) {
     super(props, context);
+    window.FractalStoreMergeControl = this;
      this.setState({ canCombine: undefined });
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
      this.onShow = this.onShow.bind(this);
-    window.FractalMergeControl = this;
+
+
     this.state = {
       show: false,
     };
@@ -31,8 +33,12 @@ class FractalMergeControl extends React.Component {
 
   }
 
-  handleShow() {
-    this.setState({ show: true });
+  handleShow(fractalId) {
+    this.setState({ show: true , fractalId:fractalId});
+
+  }
+  getFractalStoreId(){
+      return this.state.fractalId;
   }
   onShow(){
 
@@ -40,7 +46,7 @@ class FractalMergeControl extends React.Component {
           if(window.FractalCanCombine.canCombine() === true){var mergefractal_l = document.getElementById('mergefractal_l');
                 mergefractal_l.getContext('2d').drawImage(document.getElementById('fract-' + window.fractalsOfUser.getSelected()[0]),0,0);
                 var mergefractal_r = document.getElementById('mergefractal_r');
-                mergefractal_r.getContext('2d').drawImage(document.getElementById('fract-' + window.fractalsOfUser.getSelected()[1]),0,0);
+                mergefractal_r.getContext('2d').drawImage(document.getElementById('fract-' + this.state.fractalId),0,0);
                  this.setState({ canCombine: true });
                  return;
           }
@@ -51,15 +57,6 @@ class FractalMergeControl extends React.Component {
       }
   }
   render() {
-      try {
-          var fractals = parseInt(document.getElementById("meta_balanceOf").value);
-      }
-      catch (e) {
-          return null;
-      }
-      if(fractals===0){
-          return <Card body className="text-center fractal-merge-control"><p>You currently do not own any fractals. Hit the button to get your first fractals. <FractalFirstMint contract="FullContract" method="firstMint" /></p></Card>;
-      }
       var toggled_fractals = document.getElementsByClassName('fractal-toggled');
       var disabled = true;
       if(window.fractalsOfUser.getSelected().length === 2){
@@ -79,7 +76,7 @@ class FractalMergeControl extends React.Component {
                           <p>Please wait while we verify your transaction...</p>
                       </Col>
                       }
-                      <FractalCanCombine methodArgs={[ window.fractalsOfUser.getSelected()[0] ,window.fractalsOfUser.getSelected()[1]  ]  }  hidden={this.state.canCombine == null}/>
+                      <FractalCanCombine methodArgs={[ window.fractalsOfUser.getSelected()[0] , this.state.fractalId  ]  }  hidden={this.state.canCombine == null}/>
               </Col>
                   </Row>
               </Container>
@@ -102,15 +99,13 @@ class FractalMergeControl extends React.Component {
           //<FractalMerge contract="FullContract" method="combine"  />
       }
               {this.state.canCombine === true &&
-                  <FractalMerge contract="FullContract" method="combineInternal"  />
+                  <FractalStoreMerge contract="FullContract" method="combineExternal"  />
               }
           </Modal.Footer>
         </Modal>
-          <Card body className="text-center fractal-merge-control"><p>Select two fractals to merge them. <Button variant="dark" className="float-right" onClick={this.handleShow} disabled={disabled}>Merge Fractals</Button></p></Card>
-
           </>
           );
   }
 }
 
-export default FractalMergeControl;
+export default FractalStoreMergeControl;

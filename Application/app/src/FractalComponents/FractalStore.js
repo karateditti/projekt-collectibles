@@ -1,10 +1,12 @@
 import { drizzleConnect } from "drizzle-react";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {FractalDisplay} from "../FractalComponents";
+import {FractalDisplay, FractalIsShared} from "../FractalComponents";
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
+import Button from 'react-bootstrap/Button'
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 
 class FractalStore extends Component {
   constructor(props, context) {
@@ -14,8 +16,10 @@ class FractalStore extends Component {
     var methodArgs = this.props.methodArgs ? this.props.methodArgs : [];
     this.contracts = context.drizzle.contracts;
     this.state = {
+        selected:[],
+      selectedFractals:0,
       dataKey: this.contracts[this.props.contract].methods[
-        'getAllZumVerkauf'
+        'getAllzurKombinationFreigegebenExklusiveEigene'
       ].cacheCall(...methodArgs),
     };
   }
@@ -38,8 +42,34 @@ class FractalStore extends Component {
       });
     }
   }
+  handleSelect(id){
+      var selected = this.state.selected;
+      if(this.state.selected.length < 2){
+          if(!selected.includes(id)) {
+            selected.push(id);
+          }
+          else{
+            var index = selected.indexOf(id);
+              selected.splice(index, 1);
+          }
+          this.setState({selected: selected});
+      }
+      else if(this.state.selected.length === 2 && this.state.selected.includes(id))
+      {
+        var index = selected.indexOf(id);
+        selected.splice(index, 1);
+        this.setState({selected: selected});
+      }
+  }
+  getSelected(){
+    if(!this.state.selected)return 0;
+    return this.state.selected;
+  }
+  componentWillMount() {
+      this.setState({selectedFractals:window.fractalsOfUser.getSelected().length});
+  }
 
-  render() {
+    render() {
     // Contract is not yet intialized.
     if (!this.props.contracts[this.props.contract].initialized) {
       return <span>Initializing...</span>;
@@ -49,7 +79,7 @@ class FractalStore extends Component {
     if (
       !(
         this.state.dataKey in
-        this.props.contracts[this.props.contract]['getAllZumVerkauf']
+        this.props.contracts[this.props.contract]['getAllzurKombinationFreigegebenExklusiveEigene']
       )
     ) {
       return <span>Fetching...</span>;
@@ -66,7 +96,7 @@ class FractalStore extends Component {
     }
 
     var displayData = this.props.contracts[this.props.contract][
-      'getAllZumVerkauf'
+      'getAllzurKombinationFreigegebenExklusiveEigene'
     ][this.state.dataKey].value;
 
     // Optionally convert to UTF8
@@ -80,61 +110,26 @@ class FractalStore extends Component {
     }
 
     // If a render prop is given, have displayData rendered from that component
-    if (this.props.render) {
-      return this.props.render(displayData);
-    }
-
-    // If return value is an array
     if (Array.isArray(displayData)) {
-
-      var fractalsArray =[];
-      const displayListItems = displayData.map((datum, index) => {
+      var displayFractals = displayData.map((datum, index) => {
         return (
-          fractalsArray.push(<Col xs={4}><FractalDisplay contract="FullContract" method="getFraktalFromId" methodArgs={datum}/></Col>)
-        );
+            <Col xs={4}><div className={"fractal-overlay "+ (this.state.selected.includes(datum) ? 'fractal-overlay-selected' : '')}><ButtonToolbar >
+    <Button variant="primary" size="sm" onClick={((e) => window.FractalDetailView.handleShow(e))}>
+      Enlarge
+    </Button>
+     <Button variant="success" size="sm" onClick={(() => window.FractalStoreMergeControl.handleShow(datum))} {...(this.state.selectedFractals === 1 ? {disabled: 'disabled'} : {})}>
+      Merge
+    </Button>
+
+  </ButtonToolbar></div> <FractalDisplay contract="FullContract" method="getFraktalFromId" methodArgs={[datum]} fractalId={datum}/></Col>);
       });
-        while(fractalsArray.length%3 !== 0){
-          fractalsArray.push(<Col xs={4}><div className="blocker"></div><div className="fractalContainer"></div></Col>);
-        }
-        return (
-        <Container id="storeFractalsContainer">
-    <Row className="fractalDisplay">
-        {fractalsArray}
-    </Row>
-        </Container>
-    );
-    }
-
-    // If retun value is an object
-    if (typeof displayData === "object") {
-      var i = 0;
-      const displayObjectProps = [];
-
-      Object.keys(displayData).forEach(key => {
-        if (i != key) {
-          displayObjectProps.push(
-            <li key={i}>
-              <strong>{key}</strong>
-              {pendingSpinner}
-              <br />
-              {`${displayData[key]}`}
-            </li>,
-          );
+              while(displayFractals.length%3 !== 0){
+          displayFractals.push(<Col xs={4}><div className="blocker"></div><div className="fractalContainer"></div></Col>);
         }
 
-        i++;
-      });
-
-      return <ul>{displayObjectProps}</ul>;
+        return displayFractals;
     }
 
-    return (
-        <Container id="storeFractalsContainer">
-    <Row className="fractalDisplay">
-        {displayData}
-    </Row>
-        </Container>
-    );
   }
 }
 

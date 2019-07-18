@@ -17,11 +17,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import Image from 'react-bootstrap/Image'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Particles from 'react-particles-js';
-import {FractalBalance,FractalDisplay, FractalMergeControl, FractalStore, FractalDetailView, FractalsOfUser} from "./FractalComponents.js";
-import ReactDOM from 'react-dom'
-import logo from "./logo.png";
-import fr1 from "./fr1.PNG";
-import fr2 from "./fr2.PNG";
+import {FractalBalance,FractalDisplay, FractalMergeControl, FractalStore, FractalDetailView, FractalsOfUser, FractalShareControl, FractalFirstMint, FractalStoreMergeControl} from "./FractalComponents.js";
 
 var contract = "FullContract"; // The primary contract to use
 
@@ -41,51 +37,6 @@ class ShowBalance extends React.Component {
 }
 }
 
-{/*class MyFractals extends React.Component {
- constructor(props) {
-    super(props);
-
-  }
-  render() {
-var fractalsArray = [];
-try{
-	var fractals = parseInt(document.getElementById("meta_balanceOf").value);
-}catch{ return "Loading";}
-        for (var i = 0; i < fractals; i++) {
-            fractalsArray.push(<Col xs={4}><div className="fractal-overlay"><ButtonToolbar>
-    <Button variant="primary" size="sm" onClick={((e) => window.FractalDetailView.handleShow(e))}>
-      Enlarge
-    </Button>
-    <Button variant="secondary" size="sm">
-      Share
-    </Button>
-  </ButtonToolbar></div> <FractalDisplay contract={contract} method="getFraktalFromId" methodArgs={[i]}/></Col>);
-        }
-        while(fractalsArray.length%3 !== 0){
-          fractalsArray.push(<Col xs={4}><div className="blocker"></div><div className="fractalContainer"></div></Col>);
-        }
-        return          fractalsArray;
-}
-
- componentDidMount() {
-   console.log("did mount");
-   setTimeout(eval, 1000, 'initialize_fractals();');
-   return;
-   function initFractal(id) {
-     console.log("will \"fract.init('\"+id+\"');\"");
-  eval("fract.init('"+id+"');");
-}
-  var fractals = document.getElementsByClassName('render-fractal');
-   console.log(fractals);
-  for (var i = 0; i < fractals.length; i++) {
-  console.log(fractals[i].id);
-    setTimeout(initFractal, 1, fractals[i].id);
-    //Do something
-}
-  }
-}
-*/}
-
 
 export default ({ accounts}) => (
 
@@ -99,15 +50,9 @@ export default ({ accounts}) => (
   <Navbar.Toggle aria-controls="responsive-navbar-nav" />
   <Navbar.Collapse id="responsive-navbar-nav">
     <Nav className="mr-auto">
-      <Nav.Link href="#features">Meine Fraktale</Nav.Link>
-      <Nav.Link href="#pricing">Store</Nav.Link>
-      <NavDropdown title="Anleitung" id="collasible-nav-dropdown">
-        <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-        <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-        <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-        <NavDropdown.Divider />
-        <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-      </NavDropdown>
+      <Nav.Link href="#features">My Fractals</Nav.Link>
+      <Nav.Link href="#pricing">Fractal Store</Nav.Link>
+        <Nav.Link href="#pricing">Getting started</Nav.Link>
     </Nav>
     <Nav>
         <Navbar.Text>
@@ -262,36 +207,20 @@ canvas: {
 
   </Container>
           <FractalMergeControl />
+          <FractalShareControl />
+          <FractalStoreMergeControl />
 
 </Container>
 
     </Container>
   <Container fluid={true} id="bg-2">
       <Container>
-              <h2 id="fractalStore">
+              <h2 id="fractalStore" className="text-center">
         Fractal Store
     </h2>
-          {/*<FractalStore contract={contract}/>*/}
-    <div className="section">
-      <h2>Active Account</h2>
-      <AccountData accountIndex="0" units="ether" precision="3" />
-      <p>
-        <strong>Symbol: </strong>
-        <ContractData
-            contract={contract}
-            method="symbol"
-        />
-<ContractForm contract={contract} method="mint" />
-      </p>
-      <p>
-        <strong>Tokeninhalt: </strong>
-          {/*<ContractData
-          contract={contract}
-          method="getFraktalFromId"
-          methodArgs={[1]}
-        />*/}
-      </p>
-    </div>
+          <Row className="fractalDisplay fractalStore">
+          <FractalStore contract={contract}/>
+          </Row>
       </Container>
   </Container>
         <Container fluid={true} id="bg-3">
@@ -299,14 +228,24 @@ canvas: {
               <h2 id="guide">
         How it works:
     </h2>
+          <Row className="hiw-ol">
+              <Col xs={4}><span>1</span></Col>
+              <Col xs={8}><p><strong>Getting started</strong> - sign in with MetaMask and receive your first three personal fractals, free of charge.</p></Col>
+          </Row>
+          <Row className="hiw-ol">
+              <Col xs={4}><span>2</span></Col>
+              <Col xs={8}><p><strong>Merging fractals</strong> - two fractals can merge to create a new fractal. The same fractals can only be merged once. Merge your own two fractals or merge using a shared fractal by someone else. </p></Col>
+          </Row>
+          <Row className="hiw-ol">
+              <Col xs={4}><span>3</span></Col>
+              <Col xs={8}><p><strong>Start sharing</strong> - share your fractal in the fractal store, so others can use it for merging.</p></Col>
+          </Row>
       </Container>
   </Container>
               <Container fluid={true} id="bg-4">
       <Container>
           <Row>
-              <h2>
-        Fractals on Blockchain
-    </h2>
+              <p id="footer">Fractals on Blockchain - Project 2019</p>
           </Row>
       </Container>
   </Container>

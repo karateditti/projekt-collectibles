@@ -15,7 +15,7 @@ const translateType = type => {
   }
 };
 
-class FractalMerge extends Component {
+class FractalShare extends Component {
   constructor(props, context) {
     super(props);
 
@@ -49,7 +49,7 @@ class FractalMerge extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    window.FractalMergeControl.handleClose();
+    window.FractalShareControl.handleClose();
     const convertedInputs = this.inputs.map(input => {
       if (input.type === "bytes32") {
         return this.utils.toHex(this.state[input.name]);
@@ -87,12 +87,9 @@ class FractalMerge extends Component {
     }
   }
   componentDidMount() {
-    var inputFields = document.getElementsByClassName("inputMerge");
-    for(var i = 0; i < inputFields.length; i++)
-    {
-      this.setNativeValue(inputFields[i], window.fractalsOfUser.getSelected()[i]);
-      inputFields[i].dispatchEvent(new Event('input', { bubbles: true }));
-    }
+    var shareFractalInput = document.getElementById("shareFractal");
+      this.setNativeValue(shareFractalInput, window.FractalShareControl.getSelectedElement().dataset.id);
+      shareFractalInput.dispatchEvent(new Event('input', { bubbles: true }));
   }
 
   render() {
@@ -120,9 +117,10 @@ class FractalMerge extends Component {
           return (
             <input
               key={input.name}
-              className={'inputMerge hidden'}
+              id={'shareFractal'}
               type={'number'}
               name={input.name}
+              className={'hidden'}
               //value={window.fractalsOfUser.getSelected()[index]}
               placeholder={inputLabel}
               onChange={this.handleInputChange}
@@ -131,18 +129,18 @@ class FractalMerge extends Component {
         })}
         <button className="btn btn-primary" onClick={this.handleSubmit} key="submit"
           type="button">
-              Confirm merge
+              {this.props.buttonText}
             </button>
       </form>
     );
   }
 }
 
-FractalMerge.contextTypes = {
+FractalShare.contextTypes = {
   drizzle: PropTypes.object,
 };
 
-FractalMerge.propTypes = {
+FractalShare.propTypes = {
   contract: PropTypes.string.isRequired,
   method: PropTypes.string.isRequired,
   sendArgs: PropTypes.object,
@@ -160,4 +158,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default drizzleConnect(FractalMerge, mapStateToProps);
+export default drizzleConnect(FractalShare, mapStateToProps);
