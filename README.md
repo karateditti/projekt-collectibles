@@ -97,6 +97,7 @@ Wenn die Blockchain aufgesetzt wurde, können die Smart Contracts mit den Befehl
 ```
 
 Bei erfolgreichem durchführen wird in der Konsole folgendes angezeigt:
+
 **compile:**
 ```
 > Compiled successfully using:
@@ -139,7 +140,7 @@ Die Zeile `OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb47
 
 #### Random.org API
 
-Unter `https://api.random.org/dashboard` muss ein API-Key beantragt werden, um die Schnittstelle von Random.org zu verwenden.
+Unter https://api.random.org/dashboard muss ein API-Key beantragt werden, um die Schnittstelle von Random.org zu verwenden.
 
 anschließend muss der generierte Key in `RandomNumber.sol` in der update-Methode eingetragen werden.
 ```
