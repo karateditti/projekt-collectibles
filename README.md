@@ -1,9 +1,10 @@
-# projekt-collectibles
+# Fractals on Blockchain
 Projekt 6. Semester zu "Konzept zum Sammeln digitaler Güter mittels Blockchain-Technologie"
 
-## Getting Started
+## Zielsetzung der README
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Die Anleitung beschreibt das Kopieren des Projekts sowie das Starten der Anwendung auf einer lokalen Maschine. Wie in der Dokumentation (Wiki) beschrieben, wurden während des Projekts zwei Ansätze zur Generation von Zufallszahlen verfolgt.
+Primär beschreibt diese README das Aufsetzen einer lokalen Instanz mit der Generation von pseudozufälligen Zahlen. Dennoch werden zusätzliche Informationen geliefert, zum Verwenden eines Oracles.
 
 ### Vorraussetzungen
 
@@ -16,7 +17,20 @@ npm>=3.50
 ```
 
 ## Verzeichnisstruktur
-
+```
++-- Application
+|   +-- app
+|   +-- contracts
+|   +-- migrations
+|   +-- package.json
+|   +-- package-lock.json
+|   +-- truffle-config.js
++-- Realisierung mit Bridge (Contracts)
++-- Scripts
+```
+Allgemeine Struktur. `Application` beeinhaltet die Dapp (Frontend und Backend).
+ `Realisierung mit Bridge (Contracts)` beinhaltet eine alternative Implementierung der Contracts mit der Verwendung eines Oracles.
+`Scripts ` enthält Python Scripts zur Verwendung von L-Systemen zum zeichnen von Fraktalen (lediglich aus Testzwecken erstellt).
 ```
 Application
 ```
@@ -25,7 +39,10 @@ Hauptverzeichnis des Projekts. [Truffle](https://www.trufflesuite.com/)  Back-En
 Application\app
 ```
 Verzeichnis des Front-Ends der Platform. Basiert auf [Drizzle](https://github.com/trufflesuite/drizzle) und [Drizzle React](https://github.com/trufflesuite/drizzle-react).
-
+```
+Application\contracts
+```
+Beinhaltet die SmartContracts.
 
 ### Installation
 
@@ -50,15 +67,15 @@ Node v8.10.0
 Web3.js v1.0.0-beta.37
 ```
 
-## Deployment
+## Starten der Anwendung
 ### Frontend
 Das Frontend kann über `npm start` gestartet werden.
 ```
-~/projekt-collectibles/Application$ npm start
+~/projekt-collectibles/Application/app$ npm start
 ```
-###Backend/Smart Contracts
-
-Um die Smart Contracts zu deployen, wird entsprechend eine Blockchain benötigt.
+### Backend
+#### Blockchain (Ganache)
+Um die Smart Contracts zur Verfügung zu stellen, wird eine Blockchain benötigt.
 Lokal kann diese über [Ganache](https://www.trufflesuite.com/ganache) erzeugt werden.
 
 Eine Anleitung zur Installation von Ganache ist hier zu finden: [Ganache Installation](https://www.trufflesuite.com/docs/ganache/quickstart).
@@ -72,14 +89,94 @@ Empfohlene Einstellungen in Ganache:
 **Chain:**
 ![Chain](https://github.com/karateditti/projekt-collectibles/blob/master/imgWiki/ganache_screenshot3.PNG)
 
-## Built With
+### Smart Contracts
+Wenn die Blockchain aufgesetzt wurde, können die Smart Contracts mit den Befehlen `truffle compile` und `truffle migrate` kompiliert und migriert werden.
+```
+~/projekt-collectibles/Application$ truffle compile
+~/projekt-collectibles/Application$ truffle migrate
+```
+
+Bei erfolgreichem durchführen wird in der Konsole folgendes angezeigt:
+**compile:**
+```
+> Compiled successfully using:
+   - solc: 0.5.10+commit.5a6ea5b1.Emscripten.clang
+```
+
+**migrate:**
+```
+Summary
+=======
+> Total deployments:   2
+> Final cost:          0.07680498 ETH
+```
+Die Dapp ist nun verwendbar unter: http://localhost:3000/
+
+### Backend mit Oracle
+Im Folgenden wird beschrieben, wie die Generierung von Zufallszahlen mittels eines Oracles genutzt werden kann.
+
+Zuallerest müssen die Contracts in `/projekt-collectibles/Application/contracts` mit den Contracts aus `/projekt-collectibles/Realisierung mit Bridge (Contracts)` ersetzt werden.
 
 
-## Authors
+#### Ethereum-Bridge
+Um auf einer lokalen Blockchain Oraclefunktionen verwenden zu können, ist die sog. [Ethereum-Bridge](https://github.com/provable-things/ethereum-bridge) notwendig.
+Über `npm install` wurde diese bereits installiert.
+Ganache muss bereits laufen, um die Bridge zu starten.
 
+Gestartet wird die Bridge in der Konsole wie folgt:
 
-## Acknowledgments
+```
+~/projekt-collectibles/Application/node_modules/ethereum-bridge$ ethereum-bridge -H localhost:7545 -a 9
+```
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+-a 9 bedeutet, dass der Account mit Index 9 (10. Account) als Bridge verwendet wird.
+
+Wenn die Bridge erfolgreich gestartet wurde, zeigt die Konsole folgendes:
+
+![Bridge](https://github.com/karateditti/projekt-collectibles/blob/master/imgWiki/bridge_screenshot.PNG)
+
+Die Zeile `OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);` muss nun in den Konstruktor des SmartContracts `RandomNumber.sol `
+
+#### Random.org API
+
+Unter `https://api.random.org/dashboard` muss ein API-Key beantragt werden, um die Schnittstelle von Random.org zu verwenden.
+
+anschließend muss der generierte Key in `RandomNumber.sol` in der update-Methode eingetragen werden.
+```
+function update() public payable{
+            emit LogNewOraclizeQuery("Oraclize query was sent, standing by for the answer..");
+        bytes32 res =oraclize_query(
+            "URL",
+            "json(https://api.random.org/json-rpc/2/invoke).result.random.data.0",
+            '\n{"jsonrpc":"2.0","method":"generateIntegers","params":{"apiKey":"HIER KEY EINFÜGEN!","n":1,"min":1,"max":1000,"replacement":true,"base":10},"id":2994}');
+    }
+```
+
+Nun wie davor:
+
+```
+~/projekt-collectibles/Application$ truffle compile
+~/projekt-collectibles/Application$ truffle migrate
+```
+
+Bei erfolgreichem durchführen wird in der Konsole folgendes angezeigt:
+**compile:**
+```
+> Compiled successfully using:
+   - solc: 0.5.10+commit.5a6ea5b1.Emscripten.clang
+```
+
+**migrate:**
+```
+Summary
+=======
+> Total deployments:   2
+> Final cost:          0.07680498 ETH
+```
+Die Dapp ist nun verwendbar unter: http://localhost:3000/
+
+## Verwendete Tools und Frameworks
+* Node.js 
+* Truffle Suite (Truffle, Ganache, Drizzle)
+* React
+* ethereum-bridge
