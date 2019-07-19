@@ -7,7 +7,7 @@ contract Hilfsfunktionen is Zugangsbeschraenkung{
 
     function getRandomNumberRarity() internal returns(uint){ //Erstellung einer Zufallszahl nach diskreter Verteilungsfunktion
         uint random = getRandomNumber(100); // Zufallszahl zwischen 1 und 100
-        uint[3] memory weight=[uint(31),71,101]; // Gewichtung der Wahrscheinlichkeit für 1,2 und 3
+        uint[3] memory weight=[uint(51),91,101]; // Gewichtung der Wahrscheinlichkeit für 1,2 und 3
         uint[3] memory rarity=[uint(1),2,3]; // Raritäten 1 - 3
         for(uint i=0;i<weight.length;i++){
             if(random<weight[i]){
