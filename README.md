@@ -12,6 +12,7 @@ Benötigt werden nodejs sowie der npm Paketmanager.
 Download unter [nodejs.org](https://nodejs.org/en/)
 
 ```
+git>=2.0.0
 nodejs>=v8.10.0
 npm>=3.50
 ```
