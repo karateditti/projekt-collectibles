@@ -55,6 +55,7 @@ Mittels npm müssen die benötigten Paketabhängigkeit jeweils für das Front- u
 
 ```
 ~/projekt-collectibles/Application$ npm install 
+~/projekt-collectibles/Application$ npm install -g truffle
 ~/projekt-collectibles/Application/app$ npm install 
 ```
 
