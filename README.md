@@ -27,11 +27,9 @@ npm>=3.50
 |   +-- package-lock.json
 |   +-- truffle-config.js
 +-- Realisierung mit Bridge (Contracts)
-+-- Scripts
 ```
 Allgemeine Struktur. `Application` beeinhaltet die Dapp (Frontend und Backend).
  `Realisierung mit Bridge (Contracts)` beinhaltet eine alternative Implementierung der Contracts mit der Verwendung eines Oracles.
-`Scripts ` enthält Python Scripts zur Verwendung von L-Systemen zum zeichnen von Fraktalen (lediglich aus Testzwecken erstellt).
 ```
 Application
 ```

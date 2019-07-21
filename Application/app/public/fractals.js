@@ -1,12 +1,9 @@
 var initialize_fractals=(function(){
 	function initFractal(id) {
-     console.log("will \"fract.init('\"+id+\"');\"");
   eval("fract.init('"+id+"');");
 }
   var fractals = document.getElementsByClassName('render-fractal');
-   console.log(fractals);
   for (var i = 0; i < fractals.length; i++) {
-  console.log(fractals[i].id);
     setTimeout(initFractal, 100*i, fractals[i].id);
     //Do something
 }
@@ -102,7 +99,6 @@ var fract=(function (){
         }
 
         catch(e){
-    console.log("caught ex " +e);
         }
 	};
 
@@ -780,17 +776,6 @@ var fract=(function (){
 				//fract.hash.save();
 			}
 			i=0;
-            console.log({
-                'angle' : fract.angle.step,
-                'poly' : fract.poly.step,
-                'segments' : fract.segments.step,
-                'mirror' : fract.mirror.step,
-                'arms' : fract.arms.step,
-                'depth' : fract.depth.step,
-                'hash' : fract.hash,
-                'color' : fract.color
-
-            });
 			ctx.beginPath();
 			ctx.moveTo(x, y);
 			module.morelines();
