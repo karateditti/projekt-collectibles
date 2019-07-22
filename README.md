@@ -123,9 +123,9 @@ Um MetaMask mit der lokalen Blockchain-Instanz zu verbinden, sind zwei Schritte 
 Das lokale Ganache Netzwerk muss explizit festgelegt werden.
 In MetaMask muss hierfür CustomRPC ausgewählt und die Netzwerkkonfiguration, wie dargestellt, eingegeben werden.
 
-![MetaMask Netwerkeinstellung 1](https://github.com/karateditti/projekt-collectibles/blob/master/imgWiki/metamask_customrpc.png)
+<img src="https://github.com/karateditti/projekt-collectibles/blob/master/imgWiki/metamask_customrpc.png" alt="MetaMask Netwerkeinstellung 1" title="MetaMask Netwerkeinstellung 1" width="200" />  
 
-![MetaMask Netzwerkeinstellung 2](https://github.com/karateditti/projekt-collectibles/blob/master/imgWiki/metamask_customrpc_details.png)
+<img src="https://github.com/karateditti/projekt-collectibles/blob/master/imgWiki/metamask_customrpc_details.png" alt="MetaMask Netwerkeinstellung 2" title="MetaMask Netwerkeinstellung 2" width="200" /> 
 
 Sobald das Netzwerk eingestellt wurde, erstellt MetaMask einen Account.
 Dieser ist jedoch nicht mit Ether ausgestattet und kann somit nicht mit dem SmartContract interagieren, da die erforderlichen   Gaskosten nicht beglichen werden können.
