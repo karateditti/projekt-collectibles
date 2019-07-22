@@ -111,7 +111,28 @@ Summary
 > Total deployments:   2
 > Final cost:          0.07680498 ETH
 ```
-Die Dapp ist nun verwendbar unter: http://localhost:3000/
+Die Dapp ist nun erreichbar unter: http://localhost:3000/
+
+#### MetaMask
+
+Um über das Frontend mit dem Smart Contract interagieren zu können, muss eine Bridge im Browser (Z.B. Chrome) installiert werden.
+Während der Entwicklung wurde hierfür hauptsächlich die [MetaMask](https://metamask.io/) Erweiterung für Google Chrome verwendet.
+Zunächst muss ein MetaMask Account angelegt werden, um die Erweiterung nutzen zu können.
+Um MetaMask mit der lokalen Blockchain-Instanz zu verbinden, sind zwei Schritte erforderlich.
+
+Das lokale Ganache Netzwerk muss explizit festgelegt werden.
+In MetaMask muss hierfür CustomRPC ausgewählt und die Netzwerkkonfiguration, wie dargestellt, eingegeben werden.
+
+![MetaMask Netwerkeinstellung 1](https://github.com/karateditti/projekt-collectibles/blob/master/imgWiki/metamask_customrpc.png)
+
+![MetaMask Netzwerkeinstellung 2](https://github.com/karateditti/projekt-collectibles/blob/master/imgWiki/metamask_customrpc_details.png)
+
+Sobald das Netzwerk eingestellt wurde, erstellt MetaMask einen Account.
+Dieser ist jedoch nicht mit Ether ausgestattet und kann somit nicht mit dem SmartContract interagieren, da die erforderlichen   Gaskosten nicht beglichen werden können.
+Daher muss ein von Ganache erstellter Account in MetaMask importiert werden.
+
+Mit dem importierten Account kann MetaMask das Frontend (http://localhost:3000/) aufgerufen, verbunden und mit dem Interface interagiert werden.
+
 
 ### Backend mit Oracle
 Im Folgenden wird beschrieben, wie die Generierung von Zufallszahlen mittels eines Oracles genutzt werden kann.
